@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two-Factor Authentication - PDF Classifier</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <div class="auth-card">
+            <h1>Two-Factor Authentication</h1>
+            <p>Enter the 6-digit code from your authenticator app</p>
+            
+            <div th:if="${error}" class="alert alert-error">
+                <p th:text="${error}"></p>
+            </div>
+            
+            <form th:action="@{/perform-2fa}" method="post">
+                <div class="form-group">
+                    <label for="code">Verification Code:</label>
+                    <input type="text" id="code" name="code" required 
+                           pattern="[0-9]{6}" maxlength="6" 
+                           placeholder="000000" autofocus>
+                    <small>Enter the 6-digit code from your authenticator app</small>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Verify</button>
+            </form>
+            
+            <p class="text-center">
+                <a th:href="@{/logout}">Logout</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

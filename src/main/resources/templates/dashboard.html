@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - PDF Classifier</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-container">
+            <h1>PDF Classifier</h1>
+            <div class="nav-links">
+                <span>Welcome, <span th:text="${username}"></span></span>
+                <a th:href="@{/settings}">Settings</a>
+                <a th:href="@{/logout}">Logout</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="dashboard">
+            <h2>Upload PDF for Classification</h2>
+            
+            <div th:if="${message}" class="alert alert-success">
+                <p th:text="${message}"></p>
+            </div>
+            
+            <div th:if="${error}" class="alert alert-error">
+                <p th:text="${error}"></p>
+            </div>
+            
+            <div class="upload-section">
+                <form th:action="@{/upload}" method="post" enctype="multipart/form-data" id="uploadForm">
+                    <div class="form-group">
+                        <label for="file">Select PDF File:</label>
+                        <input type="file" id="file" name="file" accept=".pdf" required>
+                        <small>Only PDF files are accepted (Max size: 10MB)</small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Upload and Process</button>
+                </form>
+            </div>
+            
+            <div class="documents-section">
+                <h3>Your Documents</h3>
+                
+                <div th:if="${documents.isEmpty()}" class="empty-state">
+                    <p>No documents uploaded yet. Upload a PDF file to get started!</p>
+                </div>
+                
+                <table th:if="${!documents.isEmpty()}" class="documents-table">
+                    <thead>
+                        <tr>
+                            <th>Filename</th>
+                            <th>Upload Date</th>
+                            <th>Status</th>
+                            <th>Classification</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="doc : ${documents}">
+                            <td th:text="${doc.originalFilename}"></td>
+                            <td th:text="${#temporals.format(doc.uploadDate, 'yyyy-MM-dd HH:mm')}"></td>
+                            <td>
+                                <span th:class="'status-badge status-' + ${doc.processingStatus.name().toLowerCase()}" 
+                                      th:text="${doc.processingStatus}"></span>
+                            </td>
+                            <td>
+                                <span th:if="${doc.processingStatus.name() == 'COMPLETED'}">
+                                    <button class="btn btn-small" 
+                                            th:onclick="'showResults(' + ${doc.id} + ')'">
+                                        View Results
+                                    </button>
+                                </span>
+                                <span th:if="${doc.processingStatus.name() == 'FAILED'}" 
+                                      class="text-error">Failed</span>
+                                <span th:if="${doc.processingStatus.name() == 'PROCESSING'}">
+                                    Processing...
+                                </span>
+                                <span th:if="${doc.processingStatus.name() == 'PENDING'}">
+                                    Pending
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Add file validation
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            const fileInput = document.getElementById('file');
+            const file = fileInput.files[0];
+            
+            if (file) {
+                // Check file size (10MB)
+                if (file.size > 10 * 1024 * 1024) {
+                    e.preventDefault();
+                    alert('File size must be less than 10MB');
+                    return false;
+                }
+                
+                // Check file extension
+                if (!file.name.toLowerCase().endsWith('.pdf')) {
+                    e.preventDefault();
+                    alert('Please select a PDF file');
+                    return false;
+                }
+            }
+        });
+        
+        function showResults(docId) {
+            alert('Viewing results for document ID: ' + docId + '\nResults have been sent to your email.');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - PDF Classifier</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-container">
+            <h1>PDF Classifier</h1>
+            <div class="nav-links">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <a th:href="@{/logout}">Logout</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="settings">
+            <h2>Account Settings</h2>
+            
+            <div th:if="${message}" class="alert alert-success">
+                <p th:text="${message}"></p>
+            </div>
+            
+            <div th:if="${error}" class="alert alert-error">
+                <p th:text="${error}"></p>
+            </div>
+            
+            <div class="settings-section">
+                <h3>Account Information</h3>
+                <div class="info-row">
+                    <label>Username:</label>
+                    <span th:text="${user.username}"></span>
+                </div>
+                <div class="info-row">
+                    <label>Email:</label>
+                    <span th:text="${user.email}"></span>
+                </div>
+                <div class="info-row">
+                    <label>Account Created:</label>
+                    <span th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h3>Two-Factor Authentication</h3>
+                
+                <div th:if="${user.is2faEnabled}">
+                    <div class="alert alert-info">
+                        <p><strong>✓ Two-factor authentication is enabled</strong></p>
+                        <p>Your account is protected with an additional layer of security.</p>
+                    </div>
+                    
+                    <div th:if="${qrCode}" class="qr-code-container">
+                        <p>Scan this QR code with your authenticator app:</p>
+                        <img th:src="${qrCode}" alt="QR Code" class="qr-code">
+                        <p><small>Google Authenticator, Authy, or any TOTP-compatible app</small></p>
+                    </div>
+                    
+                    <form th:action="@{/disable-2fa}" method="post" 
+                          onsubmit="return confirm('Are you sure you want to disable two-factor authentication?');">
+                        <button type="submit" class="btn btn-danger">Disable 2FA</button>
+                    </form>
+                </div>
+                
+                <div th:unless="${user.is2faEnabled}">
+                    <div class="alert alert-warning">
+                        <p><strong>Two-factor authentication is disabled</strong></p>
+                        <p>Enable 2FA to add an extra layer of security to your account.</p>
+                    </div>
+                    
+                    <form th:action="@{/enable-2fa}" method="post">
+                        <button type="submit" class="btn btn-primary">Enable 2FA</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h3>Security Tips</h3>
+                <ul>
+                    <li>Use a strong, unique password for your account</li>
+                    <li>Enable two-factor authentication for enhanced security</li>
+                    <li>Never share your authentication codes with anyone</li>
+                    <li>Keep your authenticator app backed up</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
