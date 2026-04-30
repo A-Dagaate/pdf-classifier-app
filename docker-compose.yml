@@ -1,0 +1,49 @@
+services:
+  pdf-classifier:
+    build: .
+    container_name: pdf-classifier-app
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads_data:/app/uploads
+      - processed_data:/app/processed
+    environment:
+      # Override upload/processed paths to use volume mount points
+      - APP_UPLOAD_DIR=/app/uploads
+      - APP_PROCESSED_DIR=/app/processed
+      # JWT — override in production
+      - APP_JWT_SECRET=${JWT_SECRET:-devSecretKeyForLocalDockerMustBeLongEnough123}
+      # Email — set real credentials via .env file for email features
+      - SPRING_MAIL_USERNAME=${MAIL_USERNAME:-}
+      - SPRING_MAIL_PASSWORD=${MAIL_PASSWORD:-}
+      # Disable Thymeleaf cache in dev
+      - SPRING_THYMELEAF_CACHE=false
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/pdf-classifier/login"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  ste-study:
+    build: ./ste_sidecar
+    container_name: ste-study-api
+    ports:
+      - "8001:8001"
+    volumes:
+      - ste_chroma_data:/app/chroma_db
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+volumes:
+  uploads_data:
+  processed_data:
+  ste_chroma_data:

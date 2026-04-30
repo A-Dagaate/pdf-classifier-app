@@ -36,6 +36,7 @@ public class PdfProcessingService {
     
     private final PdfDocumentRepository pdfDocumentRepository;
     private final EmailService emailService;
+    private final MlClassificationService mlClassificationService;
     
     @Value("${app.upload.dir}")
     private String uploadDir;
@@ -72,7 +73,7 @@ public class PdfProcessingService {
      * Save uploaded PDF file
      */
     @Transactional
-    public PdfDocument saveUploadedFile(MultipartFile file, User user) throws IOException {
+    public PdfDocument saveUploadedFile(MultipartFile file, User user, PdfDocument.DocumentQuality quality) throws IOException {
         // Create upload directory if it doesn't exist
         Path uploadPath = Paths.get(uploadDir);
         if (!Files.exists(uploadPath)) {
@@ -95,7 +96,8 @@ public class PdfProcessingService {
         pdfDocument.setFileSize(file.getSize());
         pdfDocument.setUser(user);
         pdfDocument.setProcessingStatus(PdfDocument.ProcessingStatus.PENDING);
-        
+        pdfDocument.setDocumentQuality(quality);
+
         return pdfDocumentRepository.save(pdfDocument);
     }
     
@@ -112,12 +114,18 @@ public class PdfProcessingService {
             document.setProcessingStatus(PdfDocument.ProcessingStatus.PROCESSING);
             pdfDocumentRepository.save(document);
             
-            // Extract text and images from PDF
-            File pdfFile = new File(document.getFilePath());
-            ExtractedContent content = extractContentFromPdf(pdfFile);
-            
-            // Perform ML classification (placeholder - implement your ML logic here)
-            String classificationResult = performMLClassification(content);
+            // Attempt ML classification via Python service, fall back to rule-based
+            String classificationResult;
+            try {
+                classificationResult = mlClassificationService.classify(
+                        document.getFilePath(), document.getDocumentQuality());
+                log.info("ML service classification succeeded for document: {}", documentId);
+            } catch (Exception mlEx) {
+                log.warn("ML service unavailable, falling back to rule-based classification: {}", mlEx.getMessage());
+                File pdfFile = new File(document.getFilePath());
+                ExtractedContent content = extractContentFromPdf(pdfFile);
+                classificationResult = performRuleBasedClassification(content);
+            }
             
             // Create processed file
             String processedFilePath = createProcessedFile(document, classificationResult);
@@ -169,19 +177,10 @@ public class PdfProcessingService {
     }
     
     /**
-     * Perform ML classification on extracted content
-     * PLACEHOLDER: Implement your actual ML classification logic here
-     * 
-     * Options:
-     * 1. Call external ML API (AWS Rekognition, Google Vision, Azure)
-     * 2. Use DL4J for embedded ML
-     * 3. Call Python ML service via REST
+     * Rule-based classification fallback when the ML service is unavailable
      */
-    private String performMLClassification(ExtractedContent content) {
-        // This is a placeholder implementation
-        // Replace with your actual ML classification logic
-        
-        log.info("Performing ML classification on content...");
+    private String performRuleBasedClassification(ExtractedContent content) {
+        log.info("Performing rule-based classification (fallback)...");
         
         StringBuilder result = new StringBuilder();
         result.append("Classification Results:\n");
@@ -206,13 +205,8 @@ public class PdfProcessingService {
         
         result.append("\nText Length: ").append(text.length()).append(" characters\n");
         result.append("Number of Pages: ").append(content.getImages().size()).append("\n");
-        
-        // TODO: Implement actual ML classification
-        // Example approaches:
-        // 1. REST call to Python ML service
-        // 2. Use pre-trained model with DL4J
-        // 3. Call cloud ML API
-        
+        result.append("\nNote: Classified using rule-based fallback (ML service unavailable)\n");
+
         return result.toString();
     }
     

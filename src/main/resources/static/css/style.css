@@ -268,6 +268,106 @@ body {
     color: white;
 }
 
+/* Radio Button Cards */
+.radio-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.radio-label {
+    flex: 1;
+    cursor: pointer;
+}
+
+.radio-label input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.radio-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.2s;
+    background: white;
+}
+
+.radio-label input[type="radio"]:checked + .radio-card {
+    border-color: #667eea;
+    background: #f0f2ff;
+}
+
+.radio-label:hover .radio-card {
+    border-color: #667eea;
+}
+
+.radio-indicator {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    margin-top: 2px;
+    position: relative;
+    transition: border-color 0.2s;
+}
+
+.radio-label input[type="radio"]:checked + .radio-card .radio-indicator {
+    border-color: #667eea;
+}
+
+.radio-label input[type="radio"]:checked + .radio-card .radio-indicator::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 10px;
+    height: 10px;
+    background: #667eea;
+    border-radius: 50%;
+}
+
+.radio-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.radio-content strong {
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.radio-content small {
+    color: #888;
+    font-size: 0.8rem;
+    line-height: 1.3;
+}
+
+/* Quality Badges */
+.quality-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.quality-good {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.quality-poor {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
 /* Settings */
 .settings {
     background-color: white;
@@ -372,5 +472,9 @@ a:hover {
     .documents-table th,
     .documents-table td {
         padding: 0.5rem;
+    }
+
+    .radio-group {
+        flex-direction: column;
     }
 }

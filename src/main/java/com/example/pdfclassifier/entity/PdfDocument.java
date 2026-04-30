@@ -40,6 +40,10 @@ public class PdfDocument {
     @Column(name = "processing_status")
     @Enumerated(EnumType.STRING)
     private ProcessingStatus processingStatus = ProcessingStatus.PENDING;
+
+    @Column(name = "document_quality")
+    @Enumerated(EnumType.STRING)
+    private DocumentQuality documentQuality = DocumentQuality.GOOD;
     
     @Column(name = "classification_result", columnDefinition = "TEXT")
     private String classificationResult;
@@ -63,5 +67,10 @@ public class PdfDocument {
         PROCESSING,
         COMPLETED,
         FAILED
+    }
+
+    public enum DocumentQuality {
+        GOOD,
+        POOR
     }
 }

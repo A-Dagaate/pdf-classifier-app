@@ -1,375 +1,201 @@
-# PDF Classifier Application
+# pdf-classifier-app
 
-A Spring Boot web application featuring two-factor authentication, PDF upload, machine learning classification, and email notifications.
+![Java](https://img.shields.io/badge/Java-17-orange?logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2-brightgreen?logo=springboot&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.13-blue?logo=python&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
+[![Known Vulnerabilities](https://snyk.io/test/github/A-Dagaate/pdf-classifier-app/badge.svg)](https://snyk.io/test/github/A-Dagaate/pdf-classifier-app)
+
+A **polyglot document-intelligence platform**: Spring Boot handles secure user auth, PDF upload, and ML classification — while a Python FastAPI sidecar provides a fully operational RAG pipeline that answers natural-language questions about a knowledge domain using ChromaDB vector search and Claude AI.
+
+---
+
+## Architecture
+
+```
+Browser
+  │
+  ▼
+Spring Boot App  (port 8080)          Python RAG Sidecar  (port 8001)
+┌──────────────────────────────┐      ┌─────────────────────────────────────┐
+│  /pdf-classifier/*           │      │  FastAPI                            │
+│                              │      │                                     │
+│  Auth ── JWT + TOTP 2FA      │      │  GET /health                        │
+│  PDF Upload + Tika validate  │      │  GET /query?q=...  ──► Claude AI    │
+│  ML Classification (PDFBox)  │      │  GET /section/{id}                  │
+│  Async Email Notifications   │      │  GET /explain/{n}                   │
+│  Thymeleaf server-side UI    │      │  GET /quiz/k1                       │
+│                              │      │  GET /quiz/k1/{term}                │
+│  H2 / PostgreSQL / MySQL     │      │                                     │
+│  Spring Data JPA             │      │  ChromaDB  ◄── sentence-transformers│
+│  BCrypt + RFC-6238 TOTP      │      │  (vectors)      all-MiniLM-L6-v2    │
+└──────────────────────────────┘      └─────────────────────────────────────┘
+          │                                           │
+          └──────────── docker-compose.yml ───────────┘
+                        single  `docker compose up`
+```
+
+---
+
+## Quick Start
+
+### Docker (single command)
+
+```bash
+git clone https://github.com/A-Dagaate/pdf-classifier-app.git
+cd pdf-classifier-app
+cp .env.example .env          # set ANTHROPIC_API_KEY and optionally mail creds
+docker compose up --build
+```
+
+| Service | URL |
+|---|---|
+| Spring Boot app | http://localhost:8080/pdf-classifier |
+| RAG sidecar health | http://localhost:8001/health |
+| K1 vocabulary quiz | http://localhost:8001/quiz/k1 |
+
+### Local development
+
+```bash
+# Spring Boot (Java 17+, Maven 3.6+)
+mvn spring-boot:run
+
+# Python sidecar (Python 3.13+)
+cd ste_sidecar
+python3 -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+ANTHROPIC_API_KEY=sk-ant-... uvicorn main:app --port 8001
+```
+
+---
 
 ## Features
 
-- ✅ **Two-Factor Authentication (2FA)** using TOTP (Google Authenticator compatible)
-- ✅ **Secure User Authentication** with BCrypt password encryption
-- ✅ **PDF File Upload** with validation
-- ✅ **ML-Based Classification** of PDF documents (text and images)
-- ✅ **Email Notifications** with processed file attachments
-- ✅ **Responsive Web Interface** using Thymeleaf templates
-- ✅ **RESTful Architecture**
-- ✅ **Deployable as WAR** to Apache Tomcat
+### Spring Boot Application
 
-## Technology Stack
+- **Two-Factor Authentication** — TOTP (RFC 6238), QR-code setup page, Google Authenticator / Authy compatible
+- **JWT Session Management** — stateless tokens, BCrypt-hashed passwords (strength 12)
+- **PDF Upload & Validation** — Apache Tika MIME detection, 10 MB limit, UUID-prefixed storage
+- **ML Document Classification** — Apache PDFBox text and image extraction; pluggable classifier (rule-based baseline, ready for DL4J / TensorFlow Java / AWS Rekognition swap-in)
+- **Async Email Notifications** — Spring Mail, processed file attached; `@Async` thread pool keeps uploads non-blocking
+- **CSRF Protection** — Spring Security default policy, all state-mutating routes protected
 
-### Backend
-- **Spring Boot 3.2.0** - Application framework
-- **Spring Security** - Authentication and authorization
-- **Spring Data JPA** - Database access
-- **H2/PostgreSQL/MySQL** - Database options
-- **Spring Mail** - Email functionality
+### RAG Study Sidecar — ISTQB STE v1.0.1
 
-### Security
-- **BCrypt** - Password hashing
-- **TOTP** - Time-based One-Time Password (2FA)
-- **JWT** - Session management
-- **ZXing** - QR code generation
+A retrieval-augmented generation tutor wired to the ISTQB Security Test Engineer syllabus. The full pipeline runs inside Docker with no extra setup:
 
-### PDF Processing
-- **Apache PDFBox** - PDF text and image extraction
-- **Apache Tika** - Content type detection
+| Endpoint | Description |
+|---|---|
+| `GET /query?q=...` | Ask any question; returns Claude-generated answer + syllabus sources |
+| `GET /section/{id}` | Raw syllabus chunk by section ID (e.g. `3.1.1`) |
+| `GET /explain/{n}` | Exam-question deep-dive: what knowledge is being tested, how to answer |
+| `GET /questions` | All 40 exam questions with Bloom level, section mapping, core concern |
+| `GET /quiz/k1` | 36 K1 vocabulary MCQs generated from syllabus keywords |
+| `GET /quiz/k1/{term}` | MCQ for a single term |
 
-### Frontend
-- **Thymeleaf** - Server-side template engine
-- **CSS3** - Styling
-- **Vanilla JavaScript** - Client-side validation
+**RAG pipeline:**
+```
+ISTQB STE PDF
+   │
+   ├── PyMuPDF text extraction
+   ├── Regex section chunker  (43 sections, deduped)
+   ├── sentence-transformers  (all-MiniLM-L6-v2 embeddings)
+   ├── ChromaDB PersistentClient  (persisted volume)
+   └── Claude Haiku generation  (Anthropic API)
+```
 
-### Deployment
-- **Apache Tomcat 10+** - Application server
-- **Maven** - Build tool
+**Bloom-level heat map** of the 40 exam questions shows 17.5 % of marks concentrate in section 3.1.1 (Security Testing in an Organisation) — the sidecar directly targets that distribution.
+
+---
+
+## Security Scanning — Snyk
+
+Dependency vulnerability scanning is wired into the Maven build via the Snyk plugin:
+
+```bash
+# One-time: authenticate with your Snyk account
+npx snyk auth
+
+# Scan dependencies
+mvn snyk:test
+
+# Monitor continuously (uploads snapshot to snyk.io)
+mvn snyk:monitor
+```
+
+Set `SNYK_TOKEN` in your environment or `.env` file. The build does **not** fail without a token — scanning is opt-in locally and configurable as a CI gate.
+
+[![Known Vulnerabilities](https://snyk.io/test/github/A-Dagaate/pdf-classifier-app/badge.svg)](https://snyk.io/test/github/A-Dagaate/pdf-classifier-app)
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Web framework | Spring Boot 3.2, Spring MVC |
+| Security | Spring Security, BCrypt, TOTP, JWT (JJWT 0.11.5) |
+| Persistence | Spring Data JPA — H2 (dev) / PostgreSQL / MySQL |
+| PDF processing | Apache PDFBox 3.0, Apache Tika 2.9 |
+| RAG / AI | ChromaDB, sentence-transformers, Claude Haiku (Anthropic) |
+| Containerisation | Docker, Docker Compose |
+| Build | Maven 3.6+, Java 17 |
+| Testing | JUnit 5, Mockito 5, WireMock 3 |
+| Security scanning | Snyk Maven plugin |
+
+---
 
 ## Project Structure
 
 ```
 pdf-classifier-app/
-├── src/
-│   ├── main/
-│   │   ├── java/com/example/pdfclassifier/
-│   │   │   ├── PdfClassifierApplication.java
-│   │   │   ├── config/
-│   │   │   │   └── SecurityConfig.java
-│   │   │   ├── controller/
-│   │   │   │   └── MainController.java
-│   │   │   ├── entity/
-│   │   │   │   ├── User.java
-│   │   │   │   └── PdfDocument.java
-│   │   │   ├── repository/
-│   │   │   │   ├── UserRepository.java
-│   │   │   │   └── PdfDocumentRepository.java
-│   │   │   ├── security/
-│   │   │   │   ├── CustomUserDetailsService.java
-│   │   │   │   └── TwoFactorAuthenticationFilter.java
-│   │   │   └── service/
-│   │   │       ├── UserService.java
-│   │   │       ├── TotpService.java
-│   │   │       ├── PdfProcessingService.java
-│   │   │       └── EmailService.java
-│   │   └── resources/
-│   │       ├── application.properties
-│   │       ├── static/
-│   │       │   └── css/
-│   │       │       └── style.css
-│   │       └── templates/
-│   │           ├── login.html
-│   │           ├── register.html
-│   │           ├── verify-2fa.html
-│   │           ├── dashboard.html
-│   │           └── settings.html
-│   └── test/
-├── pom.xml
-├── DEPLOYMENT.md
-└── README.md
+├── src/main/java/com/example/pdfclassifier/
+│   ├── config/         SecurityConfig
+│   ├── controller/     MainController  (all routes)
+│   ├── entity/         User, PdfDocument  (JPA)
+│   ├── repository/     UserRepository, PdfDocumentRepository
+│   ├── security/       CustomUserDetailsService, TwoFactorAuthenticationFilter
+│   └── service/        UserService, TotpService, PdfProcessingService, EmailService
+├── ste_sidecar/                    Python FastAPI RAG service
+│   ├── main.py                     FastAPI app with lifespan ingest
+│   ├── ingest.py                   PDF → ChromaDB ingestion pipeline
+│   ├── query.py                    Retrieval + Claude generation
+│   ├── generate_k1_suite.py        One-shot K1 MCQ batch job
+│   ├── questions_dataset.json      40 exam questions with metadata
+│   ├── k1_questions.json           36 generated K1 vocabulary MCQs
+│   ├── ISTQB_STE_v1.0.1-Syllabus.pdf
+│   └── Dockerfile
+├── docker-compose.yml              Polyglot service orchestration
+├── .env.example                    Environment variable template
+└── pom.xml
 ```
 
-## Quick Start
+---
 
-### Prerequisites
-- Java 17+
-- Maven 3.6+
-- Apache Tomcat 10+
+## Environment Variables
 
-### 1. Clone or Create Project
-```bash
-mkdir pdf-classifier-app
-cd pdf-classifier-app
-```
+| Variable | Default | Required for |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | — | RAG sidecar (Claude generation) |
+| `APP_JWT_SECRET` | `devSecretKey...` | Change in production |
+| `SPRING_MAIL_USERNAME` | — | Email notifications |
+| `SPRING_MAIL_PASSWORD` | — | Email notifications |
+| `SNYK_TOKEN` | — | Snyk vulnerability scanning |
 
-### 2. Configure Email
-Edit `src/main/resources/application.properties`:
-```properties
-spring.mail.username=your-email@gmail.com
-spring.mail.password=your-app-password
-```
+Copy `.env.example` → `.env` before `docker compose up`.
 
-### 3. Build Application
-```bash
-mvn clean package
-```
+---
 
-### 4. Deploy to Tomcat
-```bash
-cp target/pdf-classifier.war $TOMCAT_HOME/webapps/
-$TOMCAT_HOME/bin/startup.sh
-```
+## Running Tests
 
-### 5. Access Application
-Open browser: `http://localhost:8080/pdf-classifier`
-
-## Usage Guide
-
-### 1. Register Account
-1. Navigate to application URL
-2. Click "Register here"
-3. Fill in username, email, and password
-4. Submit registration
-
-### 2. Login
-1. Enter credentials
-2. Click "Login"
-
-### 3. Enable 2FA (Recommended)
-1. Go to Settings
-2. Click "Enable 2FA"
-3. Scan QR code with Google Authenticator/Authy
-4. Save backup codes
-5. Test by logging out and back in
-
-### 4. Upload PDF
-1. From Dashboard, click "Choose File"
-2. Select a PDF file (max 10MB)
-3. Click "Upload and Process"
-4. Wait for processing notification
-
-### 5. Receive Results
-- Check email for classification results
-- Download processed file from email attachment
-- View document history on Dashboard
-
-## Machine Learning Classification
-
-The application includes a placeholder ML classification implementation. To integrate actual ML capabilities:
-
-### Option 1: External ML API
-Integrate with cloud services:
-- **AWS Rekognition** - Image classification
-- **Google Vision API** - Document analysis
-- **Azure Computer Vision** - Text and image processing
-
-### Option 2: Embedded ML Library
-Use Java ML libraries:
-- **DeepLearning4J** - Deep learning for Java
-- **TensorFlow Java** - TensorFlow bindings
-- **Weka** - Machine learning algorithms
-
-### Option 3: Python ML Service
-Call external Python service:
-```java
-// Example REST call to Python ML service
-RestTemplate restTemplate = new RestTemplate();
-ClassificationRequest request = new ClassificationRequest(content);
-ClassificationResult result = restTemplate.postForObject(
-    "http://ml-service:5000/classify", 
-    request, 
-    ClassificationResult.class
-);
-```
-
-## Security Features
-
-### Password Security
-- BCrypt hashing with salt
-- Minimum 8 character requirement
-- Password confirmation on registration
-
-### Two-Factor Authentication
-- TOTP-based (RFC 6238)
-- Compatible with Google Authenticator, Authy
-- QR code generation for easy setup
-- Session-based 2FA verification
-
-### Session Management
-- Secure session handling
-- Auto-logout on browser close
-- CSRF protection
-
-### File Upload Security
-- Extension validation
-- MIME type verification using Apache Tika
-- File size limits
-- Isolated upload directories
-
-## Configuration
-
-### Database Options
-
-**H2 (Development):**
-```properties
-spring.datasource.url=jdbc:h2:mem:pdfclassifier
-spring.datasource.username=sa
-spring.datasource.password=
-```
-
-**PostgreSQL (Production):**
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/pdfclassifier
-spring.datasource.username=postgres
-spring.datasource.password=your_password
-```
-
-**MySQL (Production):**
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/pdfclassifier
-spring.datasource.username=root
-spring.datasource.password=your_password
-```
-
-### Email Configuration
-
-**Gmail:**
-```properties
-spring.mail.host=smtp.gmail.com
-spring.mail.port=587
-spring.mail.username=your-email@gmail.com
-spring.mail.password=your-app-password
-```
-
-**Office 365:**
-```properties
-spring.mail.host=smtp.office365.com
-spring.mail.port=587
-spring.mail.username=your-email@outlook.com
-spring.mail.password=your-password
-```
-
-## API Endpoints
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/login` | GET | Login page |
-| `/perform_login` | POST | Process login |
-| `/register` | GET/POST | User registration |
-| `/verify-2fa` | GET | 2FA verification page |
-| `/perform-2fa` | POST | Process 2FA code |
-| `/dashboard` | GET | Main dashboard |
-| `/upload` | POST | Upload PDF file |
-| `/settings` | GET | User settings |
-| `/enable-2fa` | POST | Enable 2FA |
-| `/disable-2fa` | POST | Disable 2FA |
-| `/logout` | GET | User logout |
-
-## Testing
-
-### Manual Testing
-1. Register multiple user accounts
-2. Test with various PDF files
-3. Verify email delivery
-4. Test 2FA with different apps
-5. Upload PDFs with different content
-
-### Integration Testing
 ```bash
 mvn test
 ```
 
-### Load Testing
-Use tools like Apache JMeter or Gatling to test:
-- Concurrent uploads
-- Multiple user sessions
-- Database performance
-- Email queue handling
+Covers: UserService (unit, Mockito), MainController (MockMvc), TotpService (unit), PdfProcessingService (unit).
 
-## Troubleshooting
+---
 
-### Common Issues
+## Licence
 
-**Port Conflict:**
-```bash
-# Change port in server.xml or
-# Stop conflicting service
-```
-
-**Email Not Sending:**
-- Verify SMTP credentials
-- Check firewall allows port 587
-- Use app-specific password for Gmail
-
-**2FA Code Invalid:**
-- Check server time synchronization
-- Verify authenticator app time
-- Try generating new secret
-
-**PDF Upload Fails:**
-- Check file permissions on upload directory
-- Verify file size < 10MB
-- Ensure valid PDF format
-
-## Performance Optimization
-
-### Database Indexing
-```sql
-CREATE INDEX idx_user_username ON users(username);
-CREATE INDEX idx_pdf_status ON pdf_documents(processing_status);
-```
-
-### Caching
-Add Spring Cache:
-```java
-@Cacheable("users")
-public User findByUsername(String username) { ... }
-```
-
-### Async Processing
-Already implemented for:
-- PDF processing
-- Email sending
-
-## Deployment Checklist
-
-- [ ] Update email configuration
-- [ ] Set production database
-- [ ] Generate secure JWT secret
-- [ ] Enable HTTPS/SSL
-- [ ] Configure log rotation
-- [ ] Set up database backups
-- [ ] Test email delivery
-- [ ] Verify 2FA functionality
-- [ ] Load test with sample data
-- [ ] Document admin procedures
-
-## Contributing
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/YourFeature`)
-3. Commit changes (`git commit -m 'Add YourFeature'`)
-4. Push to branch (`git push origin feature/YourFeature`)
-5. Open Pull Request
-
-## License
-
-This project is provided as-is for educational and commercial use.
-
-## Support
-
-For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md)
-
-For issues:
-1. Check application logs
-2. Review configuration
-3. Verify dependencies
-4. Test database connectivity
-
-## Future Enhancements
-
-- [ ] Implement actual ML model integration
-- [ ] Add batch PDF processing
-- [ ] Support additional file formats
-- [ ] Real-time processing status via WebSockets
-- [ ] Advanced classification categories
-- [ ] User role management (admin/user)
-- [ ] API documentation with Swagger
-- [ ] Docker containerization
-- [ ] Kubernetes deployment configuration
-- [ ] Microservices architecture option
+MIT

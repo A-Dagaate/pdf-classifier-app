@@ -30,6 +30,25 @@ if ! command -v mvn &> /dev/null; then
     exit 1
 fi
 
+# Check if ML Python service is running on port 8000
+echo -e "${YELLOW}Checking ML service...${NC}"
+if curl -s --max-time 2 http://localhost:8000/health > /dev/null 2>&1; then
+    echo -e "${GREEN}ML service is running on port 8000${NC}"
+else
+    echo -e "${YELLOW}WARNING: ML service is NOT running on port 8000${NC}"
+    echo "  The app will fall back to rule-based classification."
+    echo "  To start the ML service:"
+    echo "    cd ../pdf-classifier-ml-service"
+    echo "    source venv/bin/activate"
+    echo "    uvicorn app.main:app --port 8000"
+    echo ""
+    read -p "Continue without ML service? (y/n) " -n 1 -r
+    echo ""
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        exit 0
+    fi
+fi
+
 # Display versions
 echo -e "${GREEN}Java Version:${NC}"
 java -version

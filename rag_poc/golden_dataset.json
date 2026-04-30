@@ -1,0 +1,30 @@
+[
+  {
+    "question": "What is the minimum code coverage threshold?",
+    "ground_truth": "The minimum acceptable code coverage threshold is 80%. Any pull request that reduces coverage below this threshold must be approved by the QA Lead before merging."
+  },
+  {
+    "question": "How quickly must P1 critical defects be resolved?",
+    "ground_truth": "Critical defects (P1) block the current release and require a hotfix within 48 hours."
+  },
+  {
+    "question": "What end-to-end testing tool is used and what does it cover?",
+    "ground_truth": "End-to-end tests use Playwright and cover the five critical user journeys, gating every production release."
+  },
+  {
+    "question": "How is production access controlled in the AWS environment?",
+    "ground_truth": "Access to production is controlled via IAM roles with least-privilege permissions. No IAM user access keys are permitted; all access uses instance profiles or assumed roles."
+  },
+  {
+    "question": "What triggers an automatic rollback during deployment?",
+    "ground_truth": "Rollback is automatic if the error rate exceeds 1% during the 10-minute canary window."
+  },
+  {
+    "question": "What happens when document classification confidence is below 70%?",
+    "ground_truth": "Classification confidence below 70% must trigger a manual review queue."
+  },
+  {
+    "question": "How long after document classification must a user receive an email notification?",
+    "ground_truth": "Users must receive an email notification within 5 minutes of document classification completion."
+  }
+]

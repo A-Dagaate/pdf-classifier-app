@@ -23,3 +23,13 @@ processed/
 
 # Logs
 *.log
+output.txt
+
+# ChromaDB generated data (persisted via Docker volumes, not git)
+**/chroma_db/
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/

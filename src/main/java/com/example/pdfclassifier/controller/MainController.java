@@ -1,6 +1,7 @@
 package com.example.pdfclassifier.controller;
 
 import com.example.pdfclassifier.entity.PdfDocument;
+import com.example.pdfclassifier.entity.PdfDocument.DocumentQuality;
 import com.example.pdfclassifier.entity.User;
 import com.example.pdfclassifier.service.EmailService;
 import com.example.pdfclassifier.service.PdfProcessingService;
@@ -131,6 +132,7 @@ public class MainController {
     
     @PostMapping("/upload")
     public String uploadPdf(@RequestParam("file") MultipartFile file,
+                           @RequestParam(value = "quality", defaultValue = "GOOD") String quality,
                            RedirectAttributes redirectAttributes) {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -146,8 +148,16 @@ public class MainController {
                 return "redirect:/dashboard";
             }
             
+            // Parse quality selection
+            DocumentQuality documentQuality;
+            try {
+                documentQuality = DocumentQuality.valueOf(quality.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                documentQuality = DocumentQuality.GOOD;
+            }
+
             // Save file and create database record
-            PdfDocument document = pdfProcessingService.saveUploadedFile(file, user);
+            PdfDocument document = pdfProcessingService.saveUploadedFile(file, user, documentQuality);
             
             // Process PDF asynchronously
             pdfProcessingService.processPdfAsync(document.getId());

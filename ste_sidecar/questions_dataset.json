@@ -1,0 +1,322 @@
+[
+  {
+    "q": 1, "points": 1, "select": "ONE",
+    "stem": "Which of the following BEST describes the security level of assets regarding integrity?",
+    "core_concern": "CIA triad — Integrity definition",
+    "syllabus_section": "1.1.1",
+    "syllabus_topic": "Assets and Their Corresponding Protection Level",
+    "bloom": "K2"
+  },
+  {
+    "q": 2, "points": 1, "select": "ONE",
+    "stem": "Which one of the following is an adequate alternative to describe how security testing can confirm that confidentiality of sensitive information has proper safeguards?",
+    "core_concern": "CIA triad — Confidentiality testing",
+    "syllabus_section": "1.1.2",
+    "syllabus_topic": "Information Sensitivity and Security Testing",
+    "bloom": "K2"
+  },
+  {
+    "q": 3, "points": 1, "select": "ONE",
+    "stem": "Which of the following option BEST describes a security audit?",
+    "core_concern": "Security audit definition vs. pentest vs. vulnerability scan",
+    "syllabus_section": "1.2.1",
+    "syllabus_topic": "Security Audits and Security Testing",
+    "bloom": "K2"
+  },
+  {
+    "q": 4, "points": 1, "select": "ONE",
+    "stem": "Which one of the following options describes Zero Trust?",
+    "core_concern": "Zero Trust — core principle (never trust, always verify)",
+    "syllabus_section": "1.3.1",
+    "syllabus_topic": "What is Zero Trust?",
+    "bloom": "K1"
+  },
+  {
+    "q": 5, "points": 1, "select": "TWO",
+    "stem": "Which of the following would you include to verify that the concept of Zero Trust has been correctly implemented?",
+    "core_concern": "Zero Trust — implementation verification test conditions",
+    "syllabus_section": "1.3.2",
+    "syllabus_topic": "Zero Trust in Security Testing",
+    "bloom": "K3"
+  },
+  {
+    "q": 6, "points": 1, "select": "ONE",
+    "stem": "When using open-source software, which of the following is NOT a critical factor to consider when addressing security concerns?",
+    "core_concern": "OSS security risk factors — what matters vs. what does not",
+    "syllabus_section": "1.4.1",
+    "syllabus_topic": "The Concept of OSS and its Impact on Security Testing",
+    "bloom": "K2"
+  },
+  {
+    "q": 7, "points": 1, "select": "TWO",
+    "stem": "A bank has subcontracted development of new features for its customers portal. The bank calls you to plan and perform security tests on a pre-production environment before deployment. Which of the following best describes how you would approach this task?",
+    "core_concern": "Selecting appropriate test type (black/grey/white-box) given access constraints",
+    "syllabus_section": "2.1.1",
+    "syllabus_topic": "Black-Box Testing, White-Box Testing, and Grey-Box Testing",
+    "bloom": "K3"
+  },
+  {
+    "q": 8, "points": 1, "select": "ONE",
+    "stem": "As the security test engineer you are tasked with defining the security test techniques that must be applied as static security testing. What would be your approach?",
+    "core_concern": "Static security testing — correct ordering and scope (requirements → design → code)",
+    "syllabus_section": "2.1.2",
+    "syllabus_topic": "Static and Dynamic Security Testing",
+    "bloom": "K3"
+  },
+  {
+    "q": 9, "points": 1, "select": "ONE",
+    "stem": "Given a password reset requirement, which of the following is the minimum list of test conditions to adequately test the functional security covered by this requirement?",
+    "core_concern": "Test condition derivation for authentication/password reset flows",
+    "syllabus_section": "2.2.3",
+    "syllabus_topic": "Testing Identification, Authentication and Authorization",
+    "bloom": "K3"
+  },
+  {
+    "q": 10, "points": 1, "select": "TWO",
+    "stem": "You are responsible for IAM to manage and maintain user accounts and rights. Two newcomers and one person changed department. What security test techniques should you plan?",
+    "core_concern": "IAM testing — recertification and role/privilege verification after changes",
+    "syllabus_section": "2.2.2",
+    "syllabus_topic": "Reconciliation Testing and Recertification Testing",
+    "bloom": "K3"
+  },
+  {
+    "q": 11, "points": 1, "select": "ONE",
+    "stem": "Which of the following CORRECTLY describes security test techniques for authentication mechanism?",
+    "core_concern": "Authentication testing — factory defaults, password strength",
+    "syllabus_section": "2.2.3",
+    "syllabus_topic": "Testing Identification, Authentication and Authorization",
+    "bloom": "K2"
+  },
+  {
+    "q": 12, "points": 1, "select": "ONE",
+    "stem": "Which of the following statements BEST describes how to test data protection controls?",
+    "core_concern": "Data protection testing — encryption, access controls, data masking",
+    "syllabus_section": "2.2.4",
+    "syllabus_topic": "Encryption",
+    "bloom": "K2"
+  },
+  {
+    "q": 13, "points": 1, "select": "ONE",
+    "stem": "You are asked to explain procedures for evaluating system hardening as a typical example of a protective technology. What procedure might you follow?",
+    "core_concern": "Protective technology testing — system hardening evaluation procedure",
+    "syllabus_section": "2.2.5",
+    "syllabus_topic": "Testing Protective Technologies",
+    "bloom": "K3"
+  },
+  {
+    "q": 14, "points": 1, "select": "ONE",
+    "stem": "You are responsible for all aspects of the security process. You use high-level tests as a basis for manual tests executed from an external vendor's perspective. Which security test task can be done in parallel with this?",
+    "core_concern": "ISTQB Security Test Process — task parallelism and sequencing",
+    "syllabus_section": "3.1.1",
+    "syllabus_topic": "ISTQB Security Test Process",
+    "bloom": "K3"
+  },
+  {
+    "q": 15, "points": 1, "select": "ONE",
+    "stem": "Which of the following is a main characteristic of an effective security test environment?",
+    "core_concern": "Security test environment — isolation and production likeness",
+    "syllabus_section": "3.1.2",
+    "syllabus_topic": "The Security Test Environment",
+    "bloom": "K2"
+  },
+  {
+    "q": 16, "points": 1, "select": "ONE",
+    "stem": "During component testing, which compiler warning would trigger the security tester most?",
+    "core_concern": "Component-level security testing — compiler warnings priority (security vs. functional)",
+    "syllabus_section": "3.2.1",
+    "syllabus_topic": "Security Test Design at Component Test Level",
+    "bloom": "K3"
+  },
+  {
+    "q": 17, "points": 1, "select": "ONE",
+    "stem": "Component A and B communicate via REST API. Which ONE of the following is an example of a security test performed at the component integration level?",
+    "core_concern": "Component integration security testing — inter-component communication security",
+    "syllabus_section": "3.2.2",
+    "syllabus_topic": "Security Test Design at the Component Integration Level",
+    "bloom": "K3"
+  },
+  {
+    "q": 18, "points": 1, "select": "ONE",
+    "stem": "Which one of the following BEST describes the correct procedure for implementation of end-to-end security testing to test the system's handling of unsuccessful login attempts?",
+    "core_concern": "System-level security testing — login lockout and account protection E2E",
+    "syllabus_section": "3.2.3",
+    "syllabus_topic": "Security Testing in System Testing and Acceptance Testing",
+    "bloom": "K3"
+  },
+  {
+    "q": 19, "points": 1, "select": "ONE",
+    "stem": "No explicit security requirements exist for a new banking application. You select test cases from standards and best practices. Which three statements guide you best for selecting test cases?",
+    "core_concern": "Selecting test cases from standards when requirements are absent — norms vs. best practices validity",
+    "syllabus_section": "4.1.1",
+    "syllabus_topic": "Standards and Best Practices",
+    "bloom": "K3"
+  },
+  {
+    "q": 20, "points": 1, "select": "TWO",
+    "stem": "You are asked to do a black-box pentest on a new banking core system. How can you leverage standards for your task?",
+    "core_concern": "CWE/CVE/CVSS standards for pentest — prioritization and test case derivation",
+    "syllabus_section": "4.2.1",
+    "syllabus_topic": "Industry Standards for Security Testing",
+    "bloom": "K3"
+  },
+  {
+    "q": 21, "points": 1, "select": "ONE",
+    "stem": "When you use test oracles for an application from standards and best practices, what do you have to consider?",
+    "core_concern": "Test oracles from standards — context-dependency and applicability limits",
+    "syllabus_section": "4.3.3",
+    "syllabus_topic": "Test Oracles Extracted from Standards and Best Practices",
+    "bloom": "K2"
+  },
+  {
+    "q": 22, "points": 1, "select": "ONE",
+    "stem": "Best practices and standards deliver artefacts which can be used effectively for security testing. Which combinations of artefact and activity map correctly?",
+    "core_concern": "Standards artefacts — correct mapping of artefact type to use case",
+    "syllabus_section": "4.3.4",
+    "syllabus_topic": "Advantages and Disadvantages of Leveraging Security Testing Standards and Best Practices",
+    "bloom": "K2"
+  },
+  {
+    "q": 23, "points": 1, "select": "TWO",
+    "stem": "You are hired to compromise at least one system in an automotive company's industrial network. Which TWO options best leverage the organizational context?",
+    "core_concern": "Organizational context exploitation in pentesting — social engineering and supply chain vectors",
+    "syllabus_section": "5.1.1",
+    "syllabus_topic": "Analyze a given organizational context for security testing",
+    "bloom": "K4"
+  },
+  {
+    "q": 24, "points": 1, "select": "ONE",
+    "stem": "Your company develops communication devices for the aviation industry. What ONE aspect do you BEST need to consider for security testing before market launch?",
+    "core_concern": "Regulated sector security testing — compliance requirements drive test scope",
+    "syllabus_section": "5.2.1",
+    "syllabus_topic": "The Impact of Governmental Regulations on Security Regulations",
+    "bloom": "K4"
+  },
+  {
+    "q": 25, "points": 2, "select": "ONE",
+    "stem": "During security testing of a core system you find suspicious files not created by testers or applications. Choose the option BEST describing how you would proceed.",
+    "core_concern": "Incident response during testing — follow policy, escalate to CISO",
+    "syllabus_section": "3.1.1",
+    "syllabus_topic": "ISTQB Security Test Process",
+    "bloom": "K3"
+  },
+  {
+    "q": 26, "points": 2, "select": "ONE",
+    "stem": "Certain steps are common for almost every attack. These steps can be defined as:",
+    "core_concern": "Attack anatomy / kill chain — reconnaissance, exploitation, persistence sequence",
+    "syllabus_section": "2.2.1",
+    "syllabus_topic": "Addressing Security Risks in Test Design",
+    "bloom": "K2"
+  },
+  {
+    "q": 27, "points": 1, "select": "ONE",
+    "stem": "Which ONE of the following statements describes BEST how security testing should be implemented in the development lifecycle?",
+    "core_concern": "Security testing in SDLC — each dev activity has a corresponding security test activity",
+    "syllabus_section": "3.1.1",
+    "syllabus_topic": "ISTQB Security Test Process",
+    "bloom": "K2"
+  },
+  {
+    "q": 28, "points": 2, "select": "TWO",
+    "stem": "Which TWO of the following statements BEST describe the impact of a software development model on security testing?",
+    "core_concern": "SDLC model impact — Agile/DevOps vs. Waterfall on security testing integration",
+    "syllabus_section": "3.1.1",
+    "syllabus_topic": "ISTQB Security Test Process",
+    "bloom": "K3"
+  },
+  {
+    "q": 29, "points": 1, "select": "ONE",
+    "stem": "Which of the following four statements is true for security testing within the context of maintenance testing?",
+    "core_concern": "Maintenance security testing — regression for new vulnerabilities introduced by change",
+    "syllabus_section": "3.2.3",
+    "syllabus_topic": "Security Testing in System Testing and Acceptance Testing",
+    "bloom": "K2"
+  },
+  {
+    "q": 30, "points": 1, "select": "ONE",
+    "stem": "Which of the following describes BEST why you should analyse security testing results?",
+    "core_concern": "Purpose of security test result analysis — threat understanding drives scope",
+    "syllabus_section": "3.1.1",
+    "syllabus_topic": "ISTQB Security Test Process",
+    "bloom": "K2"
+  },
+  {
+    "q": 31, "points": 1, "select": "TWO",
+    "stem": "Somebody does a penetration test covering OWASP Top-10 vulnerabilities. Which reasoning on accepting or rejecting the test report is correct?",
+    "core_concern": "Evaluating pentest reports against standards — acceptance criteria alignment",
+    "syllabus_section": "4.3.1",
+    "syllabus_topic": "Mandatory Application of Standards and Best Practices",
+    "bloom": "K3"
+  },
+  {
+    "q": 32, "points": 1, "select": "TWO",
+    "stem": "To leverage security testing to the highest level of efficiency and effectiveness it must:",
+    "core_concern": "Security testing integration into overall security process — not a standalone activity",
+    "syllabus_section": "5.1.1",
+    "syllabus_topic": "Analyze a given organizational context for security testing",
+    "bloom": "K4"
+  },
+  {
+    "q": 33, "points": 1, "select": "ONE",
+    "stem": "Typical dimensions a security test engineer can use for enhancing ISMS scope — correct pairing of actions and goals?",
+    "core_concern": "ISMS scope enhancement — mapping test engineer actions to ISMS goals",
+    "syllabus_section": "5.1.1",
+    "syllabus_topic": "Analyze a given organizational context for security testing",
+    "bloom": "K4"
+  },
+  {
+    "q": 34, "points": 1, "select": "ONE",
+    "stem": "How can security testing improve measurability within an ISMS?",
+    "core_concern": "ISMS measurability — security testing as objective input to PDCA Check step",
+    "syllabus_section": "5.1.1",
+    "syllabus_topic": "Analyze a given organizational context for security testing",
+    "bloom": "K3"
+  },
+  {
+    "q": 35, "points": 1, "select": "ONE",
+    "stem": "Security test reports should be handled with high confidentiality. What type of data motivates this classification?",
+    "core_concern": "Security test report handling — CVE/vulnerability data sensitivity",
+    "syllabus_section": "3.1.1",
+    "syllabus_topic": "ISTQB Security Test Process",
+    "bloom": "K2"
+  },
+  {
+    "q": 36, "points": 1, "select": "TWO",
+    "stem": "You executed security test cases as part of a pentest and identified a possible vulnerability with dramatic business impact. What to do before you directly motivate its mitigation?",
+    "core_concern": "Vulnerability management — demarcation and risk adjustment before mitigation",
+    "syllabus_section": "3.1.1",
+    "syllabus_topic": "ISTQB Security Test Process",
+    "bloom": "K3"
+  },
+  {
+    "q": 37, "points": 1, "select": "TWO",
+    "stem": "You identified a CVSS 9.8 vulnerability confirmed exploitable on production with strong negative business impact. The application is business-critical. What is your mitigation recommendation?",
+    "core_concern": "CVSS-based risk mitigation — compensating controls vs. direct fix on critical systems",
+    "syllabus_section": "4.2.1",
+    "syllabus_topic": "Industry Standards for Security Testing",
+    "bloom": "K3"
+  },
+  {
+    "q": 38, "points": 1, "select": "ONE",
+    "stem": "In a CI/CD environment a new pipeline is being put together. Which one of the following would you recommend being the first triggered step?",
+    "core_concern": "CI/CD security pipeline ordering — SAST runs first (no running app needed)",
+    "syllabus_section": "2.1.2",
+    "syllabus_topic": "Static and Dynamic Security Testing",
+    "bloom": "K3"
+  },
+  {
+    "q": 39, "points": 1, "select": "ONE",
+    "stem": "Which of the following test scanners & methods are scanning the application under test during run time?",
+    "core_concern": "Static vs. dynamic scanning — DAST operates at runtime",
+    "syllabus_section": "2.1.2",
+    "syllabus_topic": "Static and Dynamic Security Testing",
+    "bloom": "K1"
+  },
+  {
+    "q": 40, "points": 1, "select": "ONE",
+    "stem": "Which test objects can be scanned by static testing tools?",
+    "core_concern": "Static testing scope — what can be analysed without execution (config files, source)",
+    "syllabus_section": "2.1.2",
+    "syllabus_topic": "Static and Dynamic Security Testing",
+    "bloom": "K1"
+  }
+]

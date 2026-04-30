@@ -1,0 +1,578 @@
+[
+  {
+    "term": "authentication",
+    "question": "What is authentication?",
+    "options": {
+      "a": "The verification of a user identifier and a token to confirm who the user is and whether they are really who they claim to be.",
+      "b": "The process of asserting an identity by providing a username or other identifying information.",
+      "c": "The process of granting a user permission to access specific resources based on their verified identity.",
+      "d": "The encryption of user credentials to prevent unauthorized access to sensitive organizational assets."
+    },
+    "correct": "a",
+    "explanation": "Option a is the correct definition from the syllabus: authentication verifies both the user identifier and a token (such as a password or certificate) to answer who the user is and whether they truly are who they claim to be; option b describes identification, option c describes authorization, and option d describes a security mechanism but not authentication itself.",
+    "sources": [
+      "2.2.3",
+      "2.2.2"
+    ]
+  },
+  {
+    "term": "authorization",
+    "question": "What is authorization?",
+    "options": {
+      "a": "The process of granting a user the right to access specific resources or perform particular actions based on their verified identity.",
+      "b": "The process of verifying that a user is who they claim to be by checking their user identifier and password.",
+      "c": "The initial step of asserting an identity before attempting to access any protected resource.",
+      "d": "The mechanism used to protect sensitive assets by encrypting all communication between the user and the system."
+    },
+    "correct": "a",
+    "explanation": "Authorization is the granting of access rights and permissions to authenticated users, determining what they can do; option (b) describes authentication, (c) describes identification, and (d) describes encryption.",
+    "sources": [
+      "2.2.3",
+      "2.2.2"
+    ]
+  },
+  {
+    "term": "availability",
+    "question": "What is availability?",
+    "options": {
+      "a": "Availability ensures that information is accessible and usable when needed.",
+      "b": "Availability prevents the unauthorized disclosure of sensitive information to third parties.",
+      "c": "Availability protects data from being modified or deleted by unauthorized users.",
+      "d": "Availability measures the frequency and severity of defects discovered during system testing."
+    },
+    "correct": "a",
+    "explanation": "According to the syllabus, availability ensures that information is available when needed, which directly addresses accessibility and usability of information.",
+    "sources": [
+      "1.1.1",
+      "8.3.1"
+    ]
+  },
+  {
+    "term": "common attack pattern enumeration and classification (capec)",
+    "question": "What is common attack pattern enumeration and classification (CAPEC)?",
+    "options": {
+      "a": "A comprehensive resource that enumerates and categorizes attack patterns used by attackers to exploit weaknesses in systems and applications.",
+      "b": "A framework developed by NIST for managing information security incidents through preparation, detection, containment, and recovery.",
+      "c": "An ISO 27000 standard that defines information security management systems and controls for organizational risk assessment.",
+      "d": "A methodology for classifying security vulnerabilities based on the four common attack steps of information gathering, exploitation, persistence, and clearing tracks."
+    },
+    "correct": "a",
+    "explanation": "CAPEC is a standardized enumeration and classification resource that documents attack patterns; the other options describe NIST incident handling (b), ISO 27001 standards (c), and a generic attack sequence model (d).",
+    "sources": [
+      "5.3.1",
+      "4.2.1"
+    ]
+  },
+  {
+    "term": "common vulnerabilities and exposures (CVE)",
+    "question": "What is a Common Vulnerability and Exposure (CVE)?",
+    "options": {
+      "a": "A publicly disclosed security flaw in software or hardware that has been assigned a unique identifier and catalogued in a standardized database.",
+      "b": "A type of security testing technique used to identify all possible attack vectors within an application during penetration testing.",
+      "c": "A method of hiding defects in a system so that vulnerabilities cannot be exploited by attackers even if the defect remains unfixed.",
+      "d": "A step in the attack sequence where an attacker gathers information about a target system before attempting to gain access."
+    },
+    "correct": "a",
+    "explanation": "A CVE is a standardized, publicly disclosed vulnerability assigned a unique identifier and tracked in a centralized database; the other options describe security testing techniques, vulnerability mitigation strategies, or attack phases, not the definition of CVE itself.",
+    "sources": [
+      "5.3.1",
+      "8.3.1"
+    ]
+  },
+  {
+    "term": "common vulnerability scoring system (cvss)",
+    "question": "What is the Common Vulnerability Scoring System (CVSS)?",
+    "options": {
+      "a": "A standardized framework for rating the severity and impact of software vulnerabilities to determine their risk level and prioritize remediation efforts.",
+      "b": "A testing methodology used to identify all possible security vulnerabilities within an application's source code during static analysis.",
+      "c": "A process for documenting and cataloging every known vulnerability in an organization's IT infrastructure for compliance reporting.",
+      "d": "A software tool that automatically patches vulnerabilities in operating systems and third-party libraries without requiring manual intervention."
+    },
+    "correct": "a",
+    "explanation": "CVSS is a standardized scoring framework that quantifies vulnerability severity to help prioritize security testing and remediation efforts, making it a key test oracle for security requirements at system and component levels.",
+    "sources": [
+      "4.3.3",
+      "8.3.2"
+    ]
+  },
+  {
+    "term": "common weakness enumeration",
+    "question": "What is common weakness enumeration (CWE)?",
+    "options": {
+      "a": "A standardized list of known software weaknesses and vulnerabilities that can be used as a test oracle to determine expected security results.",
+      "b": "A methodology for systematically documenting all the steps an attacker takes during a security incident, from initial access to covering their tracks.",
+      "c": "A framework for detecting and analyzing security incidents in real-time using automated monitoring tools and alert systems.",
+      "d": "A categorization system that classifies different types of attackers based on their motivation, skill level, and attack techniques."
+    },
+    "correct": "a",
+    "explanation": "CWE is a standards-based enumeration of known software weaknesses and vulnerabilities that security testers use as a test oracle to identify and verify security issues; the other options describe attack sequences, incident detection, or attacker classifications, which are different security concepts.",
+    "sources": [
+      "5.3.1",
+      "4.3.3"
+    ]
+  },
+  {
+    "term": "common weakness scoring system (cwss)",
+    "question": "What is the Common Weakness Scoring System (CWSS)?",
+    "options": {
+      "a": "A best practice framework that prioritizes and scores known vulnerabilities in software systems to support security testing and risk assessment.",
+      "b": "An ISO standard that mandates the minimum security requirements for all software development projects across international organizations.",
+      "c": "A testing methodology used to identify defects in unit-level code by analyzing syntax errors and coding standards violations.",
+      "d": "A compliance checklist issued by the World Trade Organization to ensure that all operating systems meet baseline security patches."
+    },
+    "correct": "a",
+    "explanation": "CWSS is a best practice framework that scores and categorizes known vulnerabilities, allowing security test engineers to define low-level test cases and use it as a powerful test oracle to determine expected secure or unsecured results.",
+    "sources": [
+      "4.3.3",
+      "4.1.1"
+    ]
+  },
+  {
+    "term": "confidentiality",
+    "question": "Which of the following BEST defines confidentiality?",
+    "options": {
+      "a": "The protection against unauthorized disclosure of information to parties or systems that should not have access to it.",
+      "b": "The assurance that data cannot be modified or deleted by any unauthorized party.",
+      "c": "The guarantee that information is accessible and available whenever it is needed by authorized users.",
+      "d": "The use of cryptographic algorithms to encode sensitive data into ciphertext for secure storage."
+    },
+    "correct": "a",
+    "explanation": "Option (a) directly reflects the syllabus definition that confidentiality seeks to prevent unauthorized disclosure of information; (b) defines integrity, (c) defines availability, and (d) describes encryption as a mechanism to support confidentiality rather than defining confidentiality itself.",
+    "sources": [
+      "1.1.1",
+      "2.2.4"
+    ]
+  },
+  {
+    "term": "destructive testing",
+    "question": "What is destructive testing?",
+    "options": {
+      "a": "A security test that modifies, damages, or consumes the system or data being tested to identify vulnerabilities.",
+      "b": "A security test that verifies the system's ability to recover from intentional system failures without data loss.",
+      "c": "A test approach that focuses on identifying and reporting security weaknesses without attempting to exploit them.",
+      "d": "A test that evaluates whether security controls prevent unauthorized access to sensitive information in production."
+    },
+    "correct": "a",
+    "explanation": "Destructive testing is defined in security testing contexts as testing that modifies, damages, or consumes the system or data under test, in contrast to non-destructive testing which does not alter the test target.",
+    "sources": [
+      "2.2.1",
+      "1.1.2"
+    ]
+  },
+  {
+    "term": "dynamic application security testing (DAST)",
+    "question": "What is dynamic application security testing (DAST)?",
+    "options": {
+      "a": "Automated black-box security testing performed on running software to analyze the application and identify vulnerabilities such as input validation flaws and authentication issues.",
+      "b": "A static code analysis technique that examines source code without executing the application to detect security weaknesses before deployment.",
+      "c": "A manual penetration testing approach where security experts inspect the application architecture and design documents to identify potential threats.",
+      "d": "An interactive security testing method that requires the tester to have access to the application's source code and internal structure during execution."
+    },
+    "correct": "a",
+    "explanation": "DAST is defined as automated black-box security testing performed on running software that analyzes the application and simulates an attacker while looking for vulnerabilities, distinguishing it from static analysis (option b), manual testing (option c), and grey-box approaches (option d).",
+    "sources": [
+      "9.2.2",
+      "9.1.5"
+    ]
+  },
+  {
+    "term": "encryption",
+    "question": "What is encryption?",
+    "options": {
+      "a": "A process of encoding data into ciphered data using a cryptographic algorithm and secret keys to prevent unauthorized access to sensitive information.",
+      "b": "A method of storing data on secure servers that only allows authorized users to download files through password authentication.",
+      "c": "A technique for compressing large files so they cannot be easily transmitted or intercepted over networks.",
+      "d": "A backup procedure that creates duplicate copies of data in multiple locations to ensure data availability during system failures."
+    },
+    "correct": "a",
+    "explanation": "Option a is the accurate definition from the syllabus: encryption is the process of encoding plain text into ciphered text using cryptographic algorithms and secret keys to protect sensitive data from unauthorized disclosure.",
+    "sources": [
+      "2.2.4",
+      "1.1.1"
+    ]
+  },
+  {
+    "term": "ethical hacker",
+    "question": "What is an ethical hacker?",
+    "options": {
+      "a": "A security professional who is authorized to perform penetration testing and identify vulnerabilities in systems with the owner's explicit permission.",
+      "b": "A malicious attacker who uses advanced hacking techniques to steal data and cause damage to computer networks.",
+      "c": "A developer who writes open-source code and shares it freely with the global community to improve software transparency.",
+      "d": "A person who uses social engineering and phishing tactics to gain unauthorized access to confidential information."
+    },
+    "correct": "a",
+    "explanation": "An ethical hacker is defined as an authorized security professional conducting authorized penetration testing and vulnerability assessment; option (b) describes a malicious attacker, (c) describes an open-source developer, and (d) describes social engineering attack methods.",
+    "sources": [
+      "5.3.1",
+      "1.4.1"
+    ]
+  },
+  {
+    "term": "firewall",
+    "question": "What is a firewall?",
+    "options": {
+      "a": "A network security system that monitors and controls incoming and outgoing network traffic based on predetermined security rules.",
+      "b": "A software tool that encrypts all data transmitted between a user's device and external networks to prevent unauthorized access.",
+      "c": "A physical barrier installed in data centers to prevent employees from accessing sensitive hardware and servers.",
+      "d": "A logging mechanism that records all system activities and user actions for compliance and audit purposes."
+    },
+    "correct": "a",
+    "explanation": "A firewall is a protective technology that acts as a barrier by filtering network traffic according to security rules; option (b) describes encryption, (c) describes physical security, and (d) describes logging/monitoring systems.",
+    "sources": [
+      "2.2.5",
+      "5.2.1"
+    ]
+  },
+  {
+    "term": "fuzz testing",
+    "question": "What is fuzz testing?",
+    "options": {
+      "a": "A software testing technique that inputs invalid, unexpected, or random data into a system to discover vulnerabilities and defects.",
+      "b": "A security audit method that evaluates an organization's physical security controls and employee access privileges.",
+      "c": "A functional testing approach that verifies whether an application meets its documented security requirements.",
+      "d": "A non-destructive testing technique used to assess network vulnerabilities by monitoring intrusion detection mechanisms."
+    },
+    "correct": "a",
+    "explanation": "Fuzz testing is defined as inputting invalid, unexpected, or random data (fuzzing) into a system to expose weaknesses; option (b) describes security audits, (c) describes requirements-based testing, and (d) describes a specific audit activity rather than a testing technique.",
+    "sources": [
+      "2.2.1",
+      "1.2.1"
+    ]
+  },
+  {
+    "term": "information security management system (isms)",
+    "question": "What is an information security management system (ISMS)?",
+    "options": {
+      "a": "A comprehensive framework that combines activities to identify, evaluate, and manage security risks through information security controls.",
+      "b": "A software tool used to automatically detect and remediate all security vulnerabilities in an organization's IT infrastructure.",
+      "c": "A set of policies and procedures that only focus on protecting confidential data from unauthorized external access.",
+      "d": "A compliance checklist that organizations must complete annually to meet ISO 27001 certification requirements."
+    },
+    "correct": "a",
+    "explanation": "According to the syllabus, an ISMS is the overall core of ISO 27001 that combines activities to identify risks, evaluate them, and manage them through information security controls, making it a comprehensive management system rather than a tool, a data-only protection mechanism, or merely a compliance checklist.",
+    "sources": [
+      "4.2.1",
+      "7.3.1"
+    ]
+  },
+  {
+    "term": "integrity",
+    "question": "What is integrity?",
+    "options": {
+      "a": "The prevention of data from being modified or deleted by an unauthorized party.",
+      "b": "The prevention of unauthorized disclosure of information to external parties.",
+      "c": "The assurance that information is accessible and available when needed by authorized users.",
+      "d": "The implementation of strict access controls to verify all users on a network."
+    },
+    "correct": "a",
+    "explanation": "According to the syllabus, integrity specifically seeks to prevent data from being modified or deleted by an unauthorized party; option b describes confidentiality, option c describes availability, and option d describes zero trust principles rather than integrity.",
+    "sources": [
+      "1.1.1",
+      "1.3.1"
+    ]
+  },
+  {
+    "term": "interactive application security testing",
+    "question": "What is interactive application security testing (IAST)?",
+    "options": {
+      "a": "A dynamic security testing approach that instruments the running application to analyze it from within, combining black-box and grey-box testing capabilities.",
+      "b": "A static analysis tool that examines source code before compilation to identify security vulnerabilities without executing the application.",
+      "c": "A manual penetration testing technique where security experts interact with the application interface to simulate real-world attacks.",
+      "d": "An automated testing method that performs security tests only in the development environment using configurable black-box tools."
+    },
+    "correct": "a",
+    "explanation": "IAST is a dynamic security testing tool category that instruments the running application to analyze it from within, combining elements of both black-box and grey-box security testing as it interacts with the system under test while it is running.",
+    "sources": [
+      "9.1.5",
+      "3.2.3"
+    ]
+  },
+  {
+    "term": "malware scanning",
+    "question": "What is malware scanning?",
+    "options": {
+      "a": "An automated process that examines software and systems to detect the presence of malicious code or suspicious patterns known to be associated with malware.",
+      "b": "A manual technique used by developers to review open-source code before it is integrated into an application.",
+      "c": "The practice of monitoring network traffic to identify and block unauthorized access attempts during the exploitation phase of an attack.",
+      "d": "A security control that prevents attackers from clearing their tracks after gaining persistent access to a system."
+    },
+    "correct": "a",
+    "explanation": "Malware scanning is the automated detection process that searches for known malicious code signatures and suspicious behavioral patterns in software and systems; the other options describe different security practices such as code review, traffic monitoring, or post-incident investigation.",
+    "sources": [
+      "1.4.1",
+      "5.3.1"
+    ]
+  },
+  {
+    "term": "open-source software",
+    "question": "What is open-source software?",
+    "options": {
+      "a": "Software built on code that is freely available to be used, modified, and shared by anyone, typically distributed under licenses complying with the Open-Source Initiative definition.",
+      "b": "Software that is developed by a single vendor and made available at no cost to all users without any modification rights.",
+      "c": "Software whose source code is kept secret by the vendor to protect intellectual property and ensure security through obscurity.",
+      "d": "Software that has been tested and certified by a government authority to be free from all vulnerabilities and safe for use."
+    },
+    "correct": "a",
+    "explanation": "Option a correctly defines open-source software according to the syllabus as code that is freely used, modified, and shared by anyone under Open-Source Initiative-compliant licenses, while options b, c, and d describe proprietary software, closed-source software, and government-certified software respectively.",
+    "sources": [
+      "1.4.1",
+      "9.1.6"
+    ]
+  },
+  {
+    "term": "risk",
+    "question": "What is risk in the context of security testing?",
+    "options": {
+      "a": "The potential for a threat to exploit a vulnerability and cause harm to an asset's confidentiality, integrity, or availability.",
+      "b": "A specific attack method used by malicious actors to intentionally damage a system or steal data.",
+      "c": "The documented procedures and controls that are implemented to protect information from unauthorized access.",
+      "d": "The process of identifying and categorizing all assets within an organization based on their security classification levels."
+    },
+    "correct": "a",
+    "explanation": "Risk is defined as the potential for a threat to exploit a vulnerability and negatively impact an asset's CIA triad properties (confidentiality, integrity, availability); option (b) describes a threat/attack, (c) describes controls, and (d) describes asset classification.",
+    "sources": [
+      "1.1.1",
+      "2.2.1"
+    ]
+  },
+  {
+    "term": "risk mitigation",
+    "question": "What is risk mitigation?",
+    "options": {
+      "a": "An action taken to reduce or eliminate a vulnerability or its impact on a system to avoid potential harm to customers.",
+      "b": "The process of identifying and documenting all defects found during software testing activities.",
+      "c": "A technique used to increase test coverage by running additional test cases on high-priority modules.",
+      "d": "The practice of transferring financial responsibility for system failures to third-party insurance providers."
+    },
+    "correct": "a",
+    "explanation": "Risk mitigation refers to actions taken to address vulnerabilities either by avoiding them (locating, understanding, and fixing the underlying defect) or by hiding them (reducing impact so they cannot be exploited), as described in the syllabus sections 8.3.1 and 8.3.2.",
+    "sources": [
+      "8.3.2",
+      "8.3.1"
+    ]
+  },
+  {
+    "term": "rootkit",
+    "question": "What is a rootkit?",
+    "options": {
+      "a": "Malicious software that gains unauthorized root-level access to a system while hiding its presence from detection.",
+      "b": "A testing tool used to perform black-box security testing on open-source software applications.",
+      "c": "A legitimate system utility that provides administrators with elevated privileges to manage operating system files.",
+      "d": "A vulnerability scanner that identifies defects in the source code of open-source libraries."
+    },
+    "correct": "a",
+    "explanation": "A rootkit is malware designed to obtain root-level (administrator) access to a system and conceal itself from detection, making it a critical security threat that testers must understand when performing security testing.",
+    "sources": [
+      "1.4.1",
+      "9.1.2"
+    ]
+  },
+  {
+    "term": "scanning",
+    "question": "What is scanning in the context of security testing?",
+    "options": {
+      "a": "A reconnaissance technique used during information gathering to identify active hosts, open ports, services, and potential vulnerabilities on a target system.",
+      "b": "The process of detecting and analyzing security incidents after they have already occurred in a system.",
+      "c": "A method of maintaining persistent access to a compromised system by installing backdoors and rootkits.",
+      "d": "The final phase of an attack where an attacker removes evidence of their presence by deleting logs and audit trails."
+    },
+    "correct": "a",
+    "explanation": "Scanning is the reconnaissance and probing phase that occurs during information gathering, the first step of a common attack scenario, where attackers identify active systems, open ports, and potential vulnerabilities before exploitation.",
+    "sources": [
+      "9.2.2",
+      "5.3.1"
+    ]
+  },
+  {
+    "term": "security testing",
+    "question": "What is security testing?",
+    "options": {
+      "a": "Testing activities performed to verify that an implementation protects data and maintains functionality as intended, and to identify weaknesses and vulnerabilities.",
+      "b": "Testing performed exclusively during the acceptance testing phase to ensure all security requirements have been met before deployment.",
+      "c": "The process of encrypting sensitive data in the system to prevent unauthorized access during the development environment.",
+      "d": "Testing that measures the degree to which information requires protection to ensure its confidentiality, integrity, and availability."
+    },
+    "correct": "a",
+    "explanation": "Option (a) directly reflects the syllabus definition that security testing verifies protection of data and functionality while identifying weaknesses and vulnerabilities, whereas (b) incorrectly limits it to acceptance testing only, (c) confuses security testing with a technical control (encryption), and (d) defines information sensitivity rather than security testing itself.",
+    "sources": [
+      "1.1.2",
+      "3.2.3"
+    ]
+  },
+  {
+    "term": "software composition analysis (sca)",
+    "question": "What is software composition analysis (SCA)?",
+    "options": {
+      "a": "A static security testing technique that identifies open source components, libraries, and dependencies in application code to detect known vulnerabilities and licensing issues.",
+      "b": "A dynamic testing method that executes the application to analyze how different software modules interact and communicate during runtime.",
+      "c": "An agile testing practice used by cross-functional teams to verify that all components of a system are properly integrated before each sprint release.",
+      "d": "A white-box technique that examines the internal structure of source code to identify logic errors and coding defects before compilation."
+    },
+    "correct": "a",
+    "explanation": "SCA is a static security testing tool that specifically focuses on discovering and analyzing open source and third-party components within applications to identify known vulnerabilities and licensing risks.",
+    "sources": [
+      "6.1.2",
+      "9.2.1"
+    ]
+  },
+  {
+    "term": "software development lifecycle",
+    "question": "What is the software development lifecycle?",
+    "options": {
+      "a": "A series of phases and processes that a software system goes through from initial conception through development, testing, deployment, and maintenance until retirement.",
+      "b": "A methodology that exclusively focuses on delivering working software in short iterations using self-organizing teams.",
+      "c": "A set of tools and practices used by DevOps teams to automate the deployment of changes within one hour.",
+      "d": "The process of identifying and preventing security vulnerabilities during the development phase only."
+    },
+    "correct": "a",
+    "explanation": "The software development lifecycle is the overarching umbrella term for all phases from conception to retirement; options b, c, and d describe specific methodologies or practices within the SDLC rather than the lifecycle itself.",
+    "sources": [
+      "6.1.2",
+      "6.1.3"
+    ]
+  },
+  {
+    "term": "static application security testing",
+    "question": "What is static application security testing?",
+    "options": {
+      "a": "Security testing that analyzes application code, libraries, and configuration files without requiring the application to be running.",
+      "b": "Security testing that executes the application and monitors its behavior during runtime to identify vulnerabilities.",
+      "c": "Security testing that reviews only the application's user interface and design specifications for compliance with security standards.",
+      "d": "Security testing that uses network traffic analysis tools to intercept and examine data flowing between the application and external systems."
+    },
+    "correct": "a",
+    "explanation": "Option (a) correctly defines static application security testing as analysis of code and configuration without execution, as stated in section 9.1.4; option (b) describes dynamic testing; option (c) focuses only on UI/design; and option (d) describes network-level testing.",
+    "sources": [
+      "9.1.4",
+      "2.1.2"
+    ]
+  },
+  {
+    "term": "test environment",
+    "question": "What is a test environment?",
+    "options": {
+      "a": "A segregated system of servers and networks where security tests can be executed safely without affecting production systems or contaminating the system under test.",
+      "b": "Any server or network location where functional tests are performed to verify that software meets its intended requirements.",
+      "c": "A production-like infrastructure that must be identical to the live environment in all technical specifications.",
+      "d": "The collection of tools, frameworks, and test cases used by security testers to design and execute penetration tests."
+    },
+    "correct": "a",
+    "explanation": "According to the syllabus, security test environments must be segregated to mitigate risks such as destructive testing, SUT contamination, and data corruption or divulgation, with separation of duties required between development, test, and production environments.",
+    "sources": [
+      "3.1.2",
+      "2.2.1"
+    ]
+  },
+  {
+    "term": "test plan",
+    "question": "What is a test plan?",
+    "options": {
+      "a": "A document that describes the scope, approach, resources, and schedule of intended test activities for a specific project or release.",
+      "b": "A detailed list of all test cases that will be executed during the testing phase of a software project.",
+      "c": "A record of the actual test results, including which tests passed and which tests failed during execution.",
+      "d": "A procedure that defines the specific steps a tester must follow to execute a single test case."
+    },
+    "correct": "a",
+    "explanation": "According to ISTQB K1 definitions, a test plan is a document that outlines the scope, approach, resources, and schedule of test activities; option (b) describes test cases, option (c) describes a test report, and option (d) describes a test procedure.",
+    "sources": [
+      "5.1.1",
+      "1.1.2"
+    ]
+  },
+  {
+    "term": "test process",
+    "question": "What is a test process?",
+    "options": {
+      "a": "A set of structured activities and tasks performed to plan, design, execute, and evaluate testing activities within an organization's defined framework.",
+      "b": "The execution of test cases against software to identify defects and report them to the development team.",
+      "c": "A single test case that verifies one specific functional requirement of the system.",
+      "d": "The documentation of all test results and metrics collected during a testing phase."
+    },
+    "correct": "a",
+    "explanation": "A test process is the comprehensive, structured framework of activities and tasks that encompasses planning, design, execution, and evaluation of testing\u2014not just the execution of individual test cases (option b), a single test case (option c), or documentation alone (option d).",
+    "sources": [
+      "5.1.1",
+      "3.2.3"
+    ]
+  },
+  {
+    "term": "test report",
+    "question": "What is a test report?",
+    "options": {
+      "a": "A document that communicates the results of testing activities, including findings, test execution summary, and recommendations for identified issues.",
+      "b": "A detailed list of all test cases executed during the testing phase with pass/fail status for each individual test.",
+      "c": "A tool used to execute automated tests and generate real-time feedback on system performance during the test execution process.",
+      "d": "A record of security vulnerabilities discovered during white-box testing that must be remediated before deployment."
+    },
+    "correct": "a",
+    "explanation": "A test report is a formal communication document that summarizes testing outcomes, findings, and recommendations; option (b) describes test execution logs, option (c) describes a test execution tool, and option (d) describes a security findings document rather than a comprehensive test report.",
+    "sources": [
+      "1.1.2",
+      "2.1.1"
+    ]
+  },
+  {
+    "term": "vulnerability",
+    "question": "What is a vulnerability?",
+    "options": {
+      "a": "A weakness in a system that can be exploited, potentially causing a failure or exposing high risk.",
+      "b": "A defect that has already caused a customer-impacting failure in the production system.",
+      "c": "A testing technique used to identify defects that do not affect system functionality.",
+      "d": "A risk mitigation action taken to prevent defects from being introduced during development."
+    },
+    "correct": "a",
+    "explanation": "According to the syllabus context, a vulnerability is a weakness in the system that can be exploited and may cause failures or expose high risk, as distinguished from defects that remain hidden and do not impact customers.",
+    "sources": [
+      "8.3.1",
+      "8.3.2"
+    ]
+  },
+  {
+    "term": "vulnerability scanning",
+    "question": "What is vulnerability scanning?",
+    "options": {
+      "a": "An automated process that examines a system to identify potential security weaknesses and vulnerabilities.",
+      "b": "The process of understanding the root cause of a vulnerability by analyzing the affected code snippet in detail.",
+      "c": "A manual technique used to locate the specific component and affected area within that component based on a system-level vulnerability.",
+      "d": "The action of implementing risk mitigation measures to prevent vulnerabilities from occurring in the future."
+    },
+    "correct": "a",
+    "explanation": "Vulnerability scanning is the automated examination of systems to identify potential security weaknesses; options b, c, and d describe other phases of vulnerability management (understanding, locating, and avoiding) rather than the scanning activity itself.",
+    "sources": [
+      "8.3.2",
+      "1.1.2"
+    ]
+  },
+  {
+    "term": "weakness",
+    "question": "What is a weakness?",
+    "options": {
+      "a": "A flaw or vulnerability in a system, process, or control that can be exploited by a threat to cause harm to an asset.",
+      "b": "An actual occurrence of an attack that results in unauthorized access to confidential information.",
+      "c": "The likelihood that a threat will exploit a vulnerability within a given time period.",
+      "d": "A security incident that has been successfully contained and eradicated by the response team."
+    },
+    "correct": "a",
+    "explanation": "A weakness is a flaw or vulnerability in a system or control that creates the potential for exploitation; option (b) describes an incident, option (c) describes risk probability, and option (d) describes an incident outcome.",
+    "sources": [
+      "1.1.1",
+      "5.3.1"
+    ]
+  },
+  {
+    "term": "zero-trust",
+    "question": "What is zero-trust?",
+    "options": {
+      "a": "A security model based on the principle of strict access controls and not trusting anyone by default, even inside the network perimeter, with the motto 'trust nothing, verify everything'.",
+      "b": "A security approach that grants automatic access to users and devices once they have passed the network perimeter.",
+      "c": "A traditional perimeter-based security concept that protects organizations by establishing a trusted internal network boundary.",
+      "d": "A security model that assumes all users and devices are trustworthy and requires verification only when accessing sensitive data."
+    },
+    "correct": "a",
+    "explanation": "Option (a) accurately reflects the definition from the syllabus: zero-trust is a security model based on strict access controls with no default trust, operating under the 'trust nothing, verify everything' principle regardless of network location; options (b), (c), and (d) describe outdated or opposite security approaches.",
+    "sources": [
+      "1.3.1",
+      "1.3.2"
+    ]
+  }
+]
