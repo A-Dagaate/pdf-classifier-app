@@ -21,12 +21,12 @@ public class EmailService {
     private final JavaMailSender mailSender;
     
     @Async
-    public void sendProcessingCompleteEmail(PdfDocument document) {
+    public void sendProcessingCompleteEmail(String userEmail, PdfDocument document) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            
-            helper.setTo(document.getUser().getEmail());
+
+            helper.setTo(userEmail);
             helper.setSubject("PDF Processing Complete - " + document.getOriginalFilename());
             
             String emailContent = buildEmailContent(document);
@@ -42,7 +42,7 @@ public class EmailService {
             }
             
             mailSender.send(message);
-            log.info("Email sent successfully to: {}", document.getUser().getEmail());
+            log.info("Email sent successfully to: {}", userEmail);
             
         } catch (MessagingException e) {
             log.error("Error sending email", e);

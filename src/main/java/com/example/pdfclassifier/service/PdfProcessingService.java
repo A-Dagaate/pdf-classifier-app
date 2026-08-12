@@ -138,7 +138,7 @@ public class PdfProcessingService {
             pdfDocumentRepository.save(document);
             
             // Send email notification
-            emailService.sendProcessingCompleteEmail(document);
+            emailService.sendProcessingCompleteEmail(document.getUser().getEmail(), document);
             
             log.info("Successfully processed PDF document: {}", documentId);
             

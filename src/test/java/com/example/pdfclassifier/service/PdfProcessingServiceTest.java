@@ -147,7 +147,7 @@ class PdfProcessingServiceTest {
         assertThat(saved.getProcessingStatus()).isEqualTo(PdfDocument.ProcessingStatus.COMPLETED);
         assertThat(saved.getClassificationResult()).contains("INVOICE");
         assertThat(saved.getProcessedDate()).isNotNull();
-        verify(emailService).sendProcessingCompleteEmail(any());
+        verify(emailService).sendProcessingCompleteEmail(anyString(), any(PdfDocument.class));
     }
 
     @Test

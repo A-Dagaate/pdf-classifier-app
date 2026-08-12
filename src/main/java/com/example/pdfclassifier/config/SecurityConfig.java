@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .requestMatchers("/", "/login", "/register", "/verify-2fa", 
                                 "/css/**", "/js/**", "/images/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/api/batch/**").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -47,7 +48,7 @@ public class SecurityConfig {
                 .permitAll()
             )
             .addFilterAfter(twoFactorAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**", "/api/batch/**"))
             .headers(headers -> headers.frameOptions().sameOrigin());
         
         return http.build();

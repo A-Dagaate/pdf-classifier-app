@@ -56,7 +56,11 @@
             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         </dependency>
         
-        <!-- Tomcat (embedded for JAR deployment) -->
+         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-batch</artifactId>
+        </dependency>
+       <!-- Tomcat (embedded for JAR deployment) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
