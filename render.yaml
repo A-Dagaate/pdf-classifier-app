@@ -1,0 +1,69 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+#
+# Declares the whole stack so the deployment is reproducible and reviewable
+# rather than a pile of dashboard clicks. Apply with:
+#   Render Dashboard -> New -> Blueprint -> point at this repo/branch
+#
+# The DB_* variables below are why application-prod.properties uses discrete
+# connection fields instead of a single DATABASE_URL: Render exposes host,
+# port, database, user and password individually, and its connection string
+# is postgres://... which is not JDBC-compatible.
+
+databases:
+  - name: pdf-classifier-db
+    databaseName: pdfclassifier
+    user: pdfclassifier
+    plan: free
+
+services:
+  - type: web
+    name: pdf-classifier
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    # Spring Boot Actuator; permitted anonymously in SecurityConfig
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+
+      # Wired straight from the managed database above
+      - key: DB_HOST
+        fromDatabase:
+          name: pdf-classifier-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: pdf-classifier-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: pdf-classifier-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: pdf-classifier-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: pdf-classifier-db
+          property: password
+
+      # Generated once by Render and held thereafter; never in the repo
+      - key: JWT_SECRET
+        generateValue: true
+
+      # sync: false means "prompt me in the dashboard, do not store here".
+      # Leave both unset and the app still runs — mail failures are async and
+      # only logged, and the mail health indicator is disabled.
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+
+      # The classifier sidecar is not deployed yet. Left pointing at a dead
+      # local address on purpose: MlClassificationService throws, and
+      # PdfProcessingService falls back to rule-based classification, which
+      # is the documented degraded path. Repoint this when ml_service ships.
+      - key: APP_ML_SERVICE_BASE_URL
+        value: http://localhost:8000

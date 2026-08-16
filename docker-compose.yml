@@ -26,7 +26,9 @@ services:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8080/pdf-classifier/login"]
+      # context-path is commented out in application.properties, so the app
+      # now serves at the root. Actuator health is the right probe anyway.
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/actuator/health"]
       interval: 30s
       timeout: 10s
       retries: 3
