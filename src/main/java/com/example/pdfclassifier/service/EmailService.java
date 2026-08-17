@@ -6,6 +6,7 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -43,9 +44,14 @@ public class EmailService {
             
             mailSender.send(message);
             log.info("Email sent successfully to: {}", userEmail);
-            
-        } catch (MessagingException e) {
-            log.error("Error sending email", e);
+
+        } catch (MessagingException | MailException e) {
+            // MailException matters as much as MessagingException here: building the
+            // message throws the checked jakarta MessagingException, but sending it
+            // throws Spring's unchecked MailException, from a different hierarchy.
+            // Catching only the former let send failures escape this @Async method
+            // entirely and surface as unhandled async exceptions.
+            log.error("Error sending email to {}: {}", userEmail, e.getMessage());
         }
     }
     
@@ -88,9 +94,9 @@ public class EmailService {
             
             mailSender.send(message);
             log.info("2FA setup email sent to: {}", email);
-            
-        } catch (MessagingException e) {
-            log.error("Error sending 2FA setup email", e);
+
+        } catch (MessagingException | MailException e) {
+            log.error("Error sending 2FA setup email to {}: {}", email, e.getMessage());
         }
     }
     

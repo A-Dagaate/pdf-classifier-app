@@ -82,12 +82,13 @@ class EmailServiceTest {
         doc.setProcessedFilePath(null);
         doThrow(new MailSendException("SMTP down")).when(mailSender).send(any(MimeMessage.class));
 
-        // MailSendException extends MailException extends RuntimeException.
-        // The code catches MessagingException (checked), not MailException.
-        // So MailException WILL propagate — this documents actual behavior.
-        org.assertj.core.api.Assertions.assertThatThrownBy(
+        // MailSendException extends MailException extends RuntimeException, so it is
+        // NOT a jakarta MessagingException. This method is @Async: anything escaping
+        // it becomes an unhandled async exception rather than something a caller can
+        // handle. A notification failing must never break document processing.
+        org.assertj.core.api.Assertions.assertThatCode(
                 () -> emailService.sendProcessingCompleteEmail(testUser.getEmail(), doc))
-                .isInstanceOf(MailSendException.class);
+                .doesNotThrowAnyException();
     }
 
     // ── send2FASetupEmail ───────────────────────────────────────
@@ -103,8 +104,8 @@ class EmailServiceTest {
     void send2FASetupEmail_mailException_doesNotPropagate() {
         doThrow(new MailSendException("SMTP down")).when(mailSender).send(any(MimeMessage.class));
 
-        org.assertj.core.api.Assertions.assertThatThrownBy(
+        org.assertj.core.api.Assertions.assertThatCode(
                 () -> emailService.send2FASetupEmail("user@test.com", "testuser"))
-                .isInstanceOf(MailSendException.class);
+                .doesNotThrowAnyException();
     }
 }
