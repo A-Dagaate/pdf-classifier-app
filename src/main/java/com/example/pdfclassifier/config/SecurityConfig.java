@@ -19,55 +19,55 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    
-    private final CustomUserDetailsService userDetailsService;
-    private final TwoFactorAuthenticationFilter twoFactorAuthenticationFilter;
-    
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/register", "/verify-2fa", 
-                                "/css/**", "/js/**", "/images/**").permitAll()
-                .requestMatchers("/h2-console/**").permitAll()
-                .anyRequest().authenticated()
-            )
-            .formLogin(form -> form
-                .loginPage("/login")
-                .loginProcessingUrl("/perform_login")
-                .defaultSuccessUrl("/dashboard", true)
-                .failureUrl("/login?error=true")
-                .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout=true")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .permitAll()
-            )
-            .addFilterAfter(twoFactorAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
-            .headers(headers -> headers.frameOptions().sameOrigin());
-        
-        return http.build();
-    }
-    
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-    
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
-    
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
+
+  private final CustomUserDetailsService userDetailsService;
+  private final TwoFactorAuthenticationFilter twoFactorAuthenticationFilter;
+
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/", "/login", "/register", "/verify-2fa",
+                "/css/**", "/js/**", "/images/**")
+            .permitAll()
+            .requestMatchers("/h2-console/**").permitAll()
+            .requestMatchers("/actuator/health").permitAll()
+            .requestMatchers("/api/batch/**").permitAll()
+            .anyRequest().authenticated())
+        .formLogin(form -> form
+            .loginPage("/login")
+            .loginProcessingUrl("/perform_login")
+            .defaultSuccessUrl("/dashboard", true)
+            .failureUrl("/login?error=true")
+            .permitAll())
+        .logout(logout -> logout
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/login?logout=true")
+            .invalidateHttpSession(true)
+            .deleteCookies("JSESSIONID")
+            .permitAll())
+        .addFilterAfter(twoFactorAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**", "/api/batch/**"))
+        .headers(headers -> headers.frameOptions().sameOrigin());
+
+    return http.build();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  public DaoAuthenticationProvider authenticationProvider() {
+    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+    authProvider.setUserDetailsService(userDetailsService);
+    authProvider.setPasswordEncoder(passwordEncoder());
+    return authProvider;
+  }
+
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+    return authConfig.getAuthenticationManager();
+  }
 }

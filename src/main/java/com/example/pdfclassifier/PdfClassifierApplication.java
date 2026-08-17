@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -24,7 +25,16 @@ public class PdfClassifierApplication extends SpringBootServletInitializer {
         SpringApplication.run(PdfClassifierApplication.class, args);
     }
 
+    /**
+     * Seeds a convenience admin account for local development.
+     *
+     * Excluded from the prod profile deliberately: the password below is a
+     * literal in a public repository, so seeding it on a publicly reachable
+     * deployment would hand anyone an admin login. In prod, register through
+     * the normal flow instead.
+     */
     @Bean
+    @Profile("!prod")
     CommandLineRunner seedAdminUser(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             if (!userRepository.existsByUsername("admin")) {

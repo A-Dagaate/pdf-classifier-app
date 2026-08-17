@@ -30,7 +30,7 @@ public class PdfDocument {
     @Column(name = "file_size")
     private Long fileSize;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY) //signature worth memorizing
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
     

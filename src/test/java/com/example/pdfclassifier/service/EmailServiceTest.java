@@ -49,7 +49,7 @@ class EmailServiceTest {
         PdfDocument doc = TestDataFactory.createCompletedPdfDocument(testUser);
         doc.setProcessedFilePath(null); // no attachment
 
-        emailService.sendProcessingCompleteEmail(doc);
+        emailService.sendProcessingCompleteEmail(testUser.getEmail(), doc);
 
         verify(mailSender).send(mimeMessage);
     }
@@ -61,7 +61,7 @@ class EmailServiceTest {
         Files.writeString(attachmentFile, "test results");
         doc.setProcessedFilePath(attachmentFile.toString());
 
-        emailService.sendProcessingCompleteEmail(doc);
+        emailService.sendProcessingCompleteEmail(testUser.getEmail(), doc);
 
         verify(mailSender).send(mimeMessage);
     }
@@ -71,7 +71,7 @@ class EmailServiceTest {
         PdfDocument doc = TestDataFactory.createCompletedPdfDocument(testUser);
         doc.setProcessedFilePath("/nonexistent/path/results.txt");
 
-        emailService.sendProcessingCompleteEmail(doc);
+        emailService.sendProcessingCompleteEmail(testUser.getEmail(), doc);
 
         verify(mailSender).send(mimeMessage);
     }
@@ -86,7 +86,7 @@ class EmailServiceTest {
         // The code catches MessagingException (checked), not MailException.
         // So MailException WILL propagate — this documents actual behavior.
         org.assertj.core.api.Assertions.assertThatThrownBy(
-                () -> emailService.sendProcessingCompleteEmail(doc))
+                () -> emailService.sendProcessingCompleteEmail(testUser.getEmail(), doc))
                 .isInstanceOf(MailSendException.class);
     }
 
