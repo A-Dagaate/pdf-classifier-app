@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Something went wrong - PDF Classifier</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <div class="auth-card">
+            <!--/* Spring Boot resolves this template for any unhandled error,
+                    replacing the default fallback page. Deliberately shows only
+                    the status code: exception messages and stack traces are not
+                    exposed to the client. This comment is stripped at render. */-->
+            <h1 th:text="${status} ?: 'Error'">Error</h1>
+
+            <p th:if="${status != null and status == 404}">
+                That page doesn't exist. It may have moved, or the link may be wrong.
+            </p>
+            <p th:if="${status != null and status == 403}">
+                You don't have permission to view that page.
+            </p>
+            <p th:if="${status == null or (status != 404 and status != 403)}">
+                Something went wrong on our end. Please try again.
+            </p>
+
+            <p class="text-center">
+                <a th:href="@{/dashboard}" class="btn btn-primary">Go to Dashboard</a>
+            </p>
+
+            <p class="text-center">
+                <a th:href="@{/login}">Back to login</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

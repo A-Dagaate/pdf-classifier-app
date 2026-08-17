@@ -86,7 +86,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="doc : ${documents}">
+                        <th:block th:each="doc : ${documents}">
+                        <tr>
                             <td th:text="${doc.originalFilename}"></td>
                             <td th:text="${#temporals.format(doc.uploadDate, 'yyyy-MM-dd HH:mm')}"></td>
                             <td>
@@ -94,18 +95,22 @@
                                       th:text="${doc.documentQuality}"></span>
                             </td>
                             <td>
-                                <span th:class="'status-badge status-' + ${doc.processingStatus.name().toLowerCase()}" 
+                                <span th:class="'status-badge status-' + ${doc.processingStatus.name().toLowerCase()}"
                                       th:text="${doc.processingStatus}"></span>
                             </td>
                             <td>
                                 <span th:if="${doc.processingStatus.name() == 'COMPLETED'}">
-                                    <button class="btn btn-small" 
-                                            th:onclick="'showResults(' + ${doc.id} + ')'">
+                                    <button type="button" class="btn btn-small"
+                                            th:onclick="'toggleResult(' + ${doc.id} + ', this)'">
                                         View Results
                                     </button>
                                 </span>
-                                <span th:if="${doc.processingStatus.name() == 'FAILED'}" 
-                                      class="text-error">Failed</span>
+                                <span th:if="${doc.processingStatus.name() == 'FAILED'}">
+                                    <button type="button" class="btn btn-small"
+                                            th:onclick="'toggleResult(' + ${doc.id} + ', this)'">
+                                        View Error
+                                    </button>
+                                </span>
                                 <span th:if="${doc.processingStatus.name() == 'PROCESSING'}">
                                     Processing...
                                 </span>
@@ -114,6 +119,20 @@
                                 </span>
                             </td>
                         </tr>
+                        <!-- Classification detail, rendered inline from the database.
+                             Hidden until the row's button is clicked. -->
+                        <tr th:if="${doc.processingStatus.name() == 'COMPLETED' or doc.processingStatus.name() == 'FAILED'}"
+                            th:id="'result-' + ${doc.id}" class="result-row" style="display: none;">
+                            <td colspan="5">
+                                <pre class="result-block"
+                                     th:if="${doc.processingStatus.name() == 'COMPLETED'}"
+                                     th:text="${doc.classificationResult} ?: 'No classification result was stored for this document.'"></pre>
+                                <pre class="result-block result-block-error"
+                                     th:if="${doc.processingStatus.name() == 'FAILED'}"
+                                     th:text="${doc.errorMessage} ?: 'Processing failed, but no error detail was recorded.'"></pre>
+                            </td>
+                        </tr>
+                        </th:block>
                     </tbody>
                 </table>
             </div>
@@ -143,8 +162,21 @@
             }
         });
         
-        function showResults(docId) {
-            alert('Viewing results for document ID: ' + docId + '\nResults have been sent to your email.');
+        // Expand/collapse the detail row holding the classification result.
+        // The text is already in the page from the database — no request needed.
+        function toggleResult(docId, btn) {
+            const row = document.getElementById('result-' + docId);
+            if (!row) return;
+
+            const isHidden = row.style.display === 'none' || row.style.display === '';
+            row.style.display = isHidden ? 'table-row' : 'none';
+
+            const label = btn.textContent.trim();
+            if (label === 'View Results' || label === 'Hide Results') {
+                btn.textContent = isHidden ? 'Hide Results' : 'View Results';
+            } else {
+                btn.textContent = isHidden ? 'Hide Error' : 'View Error';
+            }
         }
     </script>
 </body>

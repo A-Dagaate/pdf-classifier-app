@@ -478,3 +478,26 @@ a:hover {
         flex-direction: column;
     }
 }
+
+/* Inline classification results, expanded from a document row */
+.result-row td {
+    background-color: #f8f9fa;
+    padding: 0;
+}
+
+.result-block {
+    margin: 0;
+    padding: 15px 20px;
+    font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #2c3e50;
+    white-space: pre-wrap;
+    word-break: break-word;
+    border-left: 4px solid #667eea;
+}
+
+.result-block-error {
+    color: #c0392b;
+    border-left-color: #c0392b;
+}
