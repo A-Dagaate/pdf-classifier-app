@@ -40,6 +40,9 @@ class PdfProcessingServiceTest {
     @Mock
     private MlClassificationService mlClassificationService;
 
+    @Mock
+    private DocumentContentService documentContentService;
+
     @InjectMocks
     private PdfProcessingService pdfProcessingService;
 

@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +36,7 @@ public class PdfProcessingService {
     private final PdfDocumentRepository pdfDocumentRepository;
     private final EmailService emailService;
     private final MlClassificationService mlClassificationService;
+    private final DocumentContentService documentContentService;
     
     @Value("${app.upload.dir}")
     private String uploadDir;
@@ -84,10 +84,12 @@ public class PdfProcessingService {
         String originalFilename = file.getOriginalFilename();
         String storedFilename = UUID.randomUUID().toString() + "_" + originalFilename;
         Path filePath = uploadPath.resolve(storedFilename);
-        
-        // Save file
-        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-        
+
+        // Read once, then write from the bytes: the same array is handed to
+        // DocumentContentService below, so the upload is not streamed twice.
+        byte[] bytes = file.getBytes();
+        Files.write(filePath, bytes);
+
         // Create database record
         PdfDocument pdfDocument = new PdfDocument();
         pdfDocument.setOriginalFilename(originalFilename);
@@ -98,7 +100,14 @@ public class PdfProcessingService {
         pdfDocument.setProcessingStatus(PdfDocument.ProcessingStatus.PENDING);
         pdfDocument.setDocumentQuality(quality);
 
-        return pdfDocumentRepository.save(pdfDocument);
+        PdfDocument saved = pdfDocumentRepository.save(pdfDocument);
+
+        // Durable copy + thumbnail. The on-disk file above stays: MlClassificationService
+        // and the PDFBox fallback both read it by path during processing. This copy is
+        // what survives a redeploy, since container filesystems are ephemeral.
+        documentContentService.store(saved, bytes, file.getContentType());
+
+        return saved;
     }
     
     /**

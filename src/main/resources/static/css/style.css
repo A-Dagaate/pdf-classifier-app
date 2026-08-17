@@ -501,3 +501,75 @@ a:hover {
     color: #c0392b;
     border-left-color: #c0392b;
 }
+
+/* Expanded row: thumbnail beside the classification text */
+.result-panel {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 15px 20px;
+}
+
+.result-preview {
+    flex: 0 0 auto;
+    text-align: center;
+}
+
+.preview-thumb {
+    display: block;
+    max-width: 180px;
+    height: auto;
+    border: 1px solid #dfe3e8;
+    border-radius: 4px;
+    background-color: white;
+    margin-bottom: 8px;
+}
+
+.preview-missing {
+    max-width: 180px;
+    padding: 30px 10px;
+    margin-bottom: 8px;
+    color: #7f8c8d;
+    font-size: 0.85rem;
+    border: 1px dashed #cfd6dd;
+    border-radius: 4px;
+}
+
+.result-panel .result-block {
+    flex: 1 1 auto;
+    padding: 0;
+    border-left: none;
+}
+
+/* Dedicated document page */
+.document-layout {
+    display: flex;
+    gap: 25px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.document-viewer {
+    flex: 1 1 520px;
+    min-width: 300px;
+}
+
+.pdf-frame {
+    width: 100%;
+    height: 70vh;
+    min-height: 420px;
+    border: 1px solid #dfe3e8;
+    border-radius: 6px;
+    background-color: white;
+}
+
+.document-side {
+    flex: 1 1 300px;
+    min-width: 280px;
+}
+
+.document-side .result-block {
+    border-left: 4px solid #667eea;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}

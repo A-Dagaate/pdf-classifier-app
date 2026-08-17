@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${document.originalFilename} + ' - PDF Classifier'">Document - PDF Classifier</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-container">
+            <h1>PDF Classifier</h1>
+            <div class="nav-links">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <a th:href="@{/settings}">Settings</a>
+                <a th:href="@{/logout}">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="documents-section">
+            <p><a th:href="@{/dashboard}">&larr; Back to dashboard</a></p>
+            <h2 th:text="${document.originalFilename}">Document</h2>
+
+            <div class="document-layout">
+                <!-- Viewer. Browsers render application/pdf natively, so no JS viewer is needed. -->
+                <div class="document-viewer">
+                    <iframe th:if="${hasPreview}"
+                            th:src="@{'/documents/' + ${document.id} + '/file'}"
+                            title="Document preview"
+                            class="pdf-frame"></iframe>
+
+                    <div th:unless="${hasPreview}" class="alert alert-warning">
+                        <p><strong>No stored copy of this file</strong></p>
+                        <p>
+                            It was uploaded before preview support existed, or its stored
+                            copy was pruned — only the ten most recent uploads per account
+                            keep their file. The classification below is unaffected.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="document-side">
+                    <h3>Classification</h3>
+                    <pre class="result-block"
+                         th:if="${document.processingStatus.name() == 'COMPLETED'}"
+                         th:text="${document.classificationResult} ?: 'No classification result was stored.'"></pre>
+                    <pre class="result-block result-block-error"
+                         th:if="${document.processingStatus.name() == 'FAILED'}"
+                         th:text="${document.errorMessage} ?: 'Processing failed, but no error detail was recorded.'"></pre>
+                    <p th:if="${document.processingStatus.name() == 'PENDING'
+                               or document.processingStatus.name() == 'PROCESSING'}">
+                        Still processing — reload in a moment.
+                    </p>
+
+                    <h3>Processing details</h3>
+                    <div class="info-row">
+                        <label>Status:</label>
+                        <span th:class="'status-badge status-' + ${document.processingStatus.name().toLowerCase()}"
+                              th:text="${document.processingStatus}"></span>
+                    </div>
+                    <div class="info-row">
+                        <label>Quality routing:</label>
+                        <span th:class="'quality-badge quality-' + ${document.documentQuality.name().toLowerCase()}"
+                              th:text="${document.documentQuality}"></span>
+                    </div>
+                    <div class="info-row">
+                        <label>Model used:</label>
+                        <span th:text="${document.documentQuality.name() == 'POOR'}
+                                        ? 'Donut (OCR-free)' : 'LayoutLMv3 (OCR-based)'"></span>
+                    </div>
+                    <div class="info-row">
+                        <label>Uploaded:</label>
+                        <span th:text="${#temporals.format(document.uploadDate, 'yyyy-MM-dd HH:mm')}"></span>
+                    </div>
+                    <div class="info-row">
+                        <label>Processed:</label>
+                        <span th:text="${document.processedDate != null}
+                                        ? ${#temporals.format(document.processedDate, 'yyyy-MM-dd HH:mm')}
+                                        : '—'"></span>
+                    </div>
+                    <div class="info-row">
+                        <label>File size:</label>
+                        <span th:text="${document.fileSize != null}
+                                        ? ${#numbers.formatDecimal(document.fileSize / 1024.0, 1, 1)} + ' KB'
+                                        : '—'"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
