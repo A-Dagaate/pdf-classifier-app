@@ -9,6 +9,7 @@ import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.imageio.ImageIO;
@@ -47,8 +48,26 @@ public class DocumentContentService {
      *
      * Never throws: a preview is a nice-to-have, and failing an upload because a
      * thumbnail could not be rendered would trade a working feature for a broken one.
+     *
+     * REQUIRES_NEW is load-bearing, not decoration. The caller,
+     * PdfProcessingService.saveUploadedFile, is itself @Transactional. Under the
+     * default REQUIRED propagation this method would JOIN that transaction, so a
+     * database failure here would mark the shared transaction rollback-only. The
+     * catch below would swallow the exception, this method would return normally,
+     * and the caller's commit would then fail with UnexpectedRollbackException —
+     * the upload would fail anyway and the defensive catch would buy nothing.
+     *
+     * The trade-off accepted in exchange: this commits independently, so if the
+     * caller's transaction later rolls back, a content row can survive pointing at
+     * a document row that was never committed. That orphan is harmless — there is
+     * no foreign key, and DocumentController answers 404 for a document that does
+     * not exist — whereas the alternative loses the upload itself.
+     *
+     * Note this behaviour is not covered by DocumentContentServiceTest: Mockito
+     * mocks have no transaction manager, so propagation cannot be observed there.
+     * Verifying it needs an integration test with a real transactional context.
      */
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void store(PdfDocument document, byte[] pdfBytes, String contentType) {
         try {
             PdfDocumentContent content = new PdfDocumentContent();
