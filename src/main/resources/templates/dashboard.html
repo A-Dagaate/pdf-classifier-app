@@ -13,7 +13,9 @@
             <div class="nav-links">
                 <span>Welcome, <span th:text="${username}"></span></span>
                 <a th:href="@{/settings}">Settings</a>
-                <a th:href="@{/logout}">Logout</a>
+                <form th:action="@{/logout}" method="post" class="logout-form">
+                    <button type="submit" class="link-button">Logout</button>
+                </form>
             </div>
         </div>
     </div>

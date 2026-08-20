@@ -28,9 +28,11 @@
                 <button type="submit" class="btn btn-primary">Verify</button>
             </form>
             
-            <p class="text-center">
-                <a th:href="@{/logout}">Logout</a>
-            </p>
+            <div class="text-center">
+                <form th:action="@{/logout}" method="post" class="logout-form">
+                    <button type="submit" class="link-button">Logout</button>
+                </form>
+            </div>
         </div>
     </div>
 </body>

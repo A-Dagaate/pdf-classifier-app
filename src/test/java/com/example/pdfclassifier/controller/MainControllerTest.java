@@ -188,6 +188,46 @@ class MainControllerTest {
                 .andExpect(model().attributeExists("username", "user", "documents"));
     }
 
+    @Test
+    @WithMockUser(username = "testuser")
+    void dashboard_rendersLogoutAsPostFormWithCsrfToken() throws Exception {
+        // This is a RENDERING test on purpose. The logout defect shipped because
+        // every existing test asserted on view names and model attributes, and
+        // nothing ever rendered the page. A <a href="/logout"> issues a GET,
+        // which LogoutFilter refuses (it matches POST only) and which CsrfFilter
+        // exempts — so logout 404'd on every authenticated page in production.
+        when(userService.findByUsername("testuser")).thenReturn(Optional.of(testUser));
+        when(pdfProcessingService.getUserDocuments(testUser)).thenReturn(List.of());
+
+        String html = mockMvc.perform(get("/dashboard"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        org.assertj.core.api.Assertions.assertThat(html)
+                .as("logout must be a POST form, never a link")
+                .contains("<form action=\"/logout\" method=\"post\"")
+                .doesNotContain("<a href=\"/logout\"");
+
+        org.assertj.core.api.Assertions.assertThat(html)
+                .as("Thymeleaf must inject the CSRF token, or the POST is rejected with 403")
+                .contains("name=\"_csrf\"");
+    }
+
+    @Test
+    @WithMockUser(username = "testuser")
+    void settings_rendersLogoutAsPostFormWithCsrfToken() throws Exception {
+        when(userService.findByUsername("testuser")).thenReturn(Optional.of(testUser));
+
+        String html = mockMvc.perform(get("/settings"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        org.assertj.core.api.Assertions.assertThat(html)
+                .contains("<form action=\"/logout\" method=\"post\"")
+                .contains("name=\"_csrf\"")
+                .doesNotContain("<a href=\"/logout\"");
+    }
+
     // ── Upload ──────────────────────────────────────────────────
 
     @Test

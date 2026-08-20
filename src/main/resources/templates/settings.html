@@ -12,7 +12,9 @@
             <h1>PDF Classifier</h1>
             <div class="nav-links">
                 <a th:href="@{/dashboard}">Dashboard</a>
-                <a th:href="@{/logout}">Logout</a>
+                <form th:action="@{/logout}" method="post" class="logout-form">
+                    <button type="submit" class="link-button">Logout</button>
+                </form>
             </div>
         </div>
     </div>
