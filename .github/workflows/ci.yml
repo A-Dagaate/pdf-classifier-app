@@ -16,13 +16,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # JDK 17 to match <java.version> in pom.xml and the Dockerfile's
       # eclipse-temurin:17 base image. Building on a newer JDK than production
       # runs is a good way to find out about incompatibilities in production.
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: '17'
           distribution: 'temurin'
@@ -35,7 +35,7 @@ jobs:
       # need when a run goes red, and they are gone once the runner is torn down.
       - name: Upload test reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: surefire-reports
           path: target/surefire-reports/
@@ -48,7 +48,7 @@ jobs:
     needs: test
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # Proves the multi-stage Dockerfile still builds — the exact thing Railway
       # runs on deploy. Catches a broken deploy before Railway does.

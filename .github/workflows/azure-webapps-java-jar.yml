@@ -25,9 +25,12 @@ env:
   DISTRIBUTION: zulu                  # set this to the Java distribution
 
 on:
-  push:
-    branches: [ "main" ]
-  workflow_dispatch:
+  # Deploy-on-push disabled: this workflow has never completed successfully
+  # (10 of 10 runs failed — it needs an Azure app name and publish profile
+  # that were never configured), and the live deployment target is Railway.
+  # Kept rather than deleted so the Azure pipeline remains available; run it
+  # manually from the Actions tab once Azure is actually set up.
+  workflow_dispatch: {}
 
 permissions:
   contents: read
