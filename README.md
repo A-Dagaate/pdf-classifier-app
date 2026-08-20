@@ -4,6 +4,7 @@
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2-brightgreen?logo=springboot&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.13-blue?logo=python&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
+[![CI](https://github.com/A-Dagaate/pdf-classifier-app/actions/workflows/ci.yml/badge.svg)](https://github.com/A-Dagaate/pdf-classifier-app/actions/workflows/ci.yml)
 [![Known Vulnerabilities](https://snyk.io/test/github/A-Dagaate/pdf-classifier-app/badge.svg)](https://snyk.io/test/github/A-Dagaate/pdf-classifier-app)
 
 A **polyglot document-intelligence platform**: Spring Boot handles secure user auth, PDF upload, and ML classification — while a Python FastAPI sidecar provides a fully operational (not quite but I'm showing off here so bear with me) RAG pipeline that answers natural-language questions about a knowledge domain using ChromaDB vector search and Claude AI. Shows your 16 yr old 80% of what they need to regress an AI/ML pipeline. Won't get her a job but at least she won't be bored!

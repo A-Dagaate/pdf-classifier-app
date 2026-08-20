@@ -1,0 +1,56 @@
+name: CI
+
+# Runs the full suite on every push and pull request to main, so the green
+# badge in the README reflects the current state of the branch rather than
+# whatever passed on someone's laptop.
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    name: Build and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # JDK 17 to match <java.version> in pom.xml and the Dockerfile's
+      # eclipse-temurin:17 base image. Building on a newer JDK than production
+      # runs is a good way to find out about incompatibilities in production.
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build and run tests
+        run: mvn -B clean verify
+
+      # Uploaded even on failure — the surefire reports are what you actually
+      # need when a run goes red, and they are gone once the runner is torn down.
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: target/surefire-reports/
+          retention-days: 7
+
+  docker:
+    name: Docker image builds
+    runs-on: ubuntu-latest
+    # Only worth checking once the tests pass.
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Proves the multi-stage Dockerfile still builds — the exact thing Railway
+      # runs on deploy. Catches a broken deploy before Railway does.
+      - name: Build image
+        run: docker build -t pdf-classifier:ci .
