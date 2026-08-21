@@ -215,17 +215,52 @@
         </excludes>
       </configuration>
     </plugin>
-    <plugin>
-      <groupId>io.snyk</groupId>
-      <artifactId>snyk-maven-plugin</artifactId>
-      <version>2.2.0</version>
-      <inherited>false</inherited>
-      <configuration>
-        <apiToken>${env.SNYK_TOKEN}</apiToken>
-        <failSeverity>high</failSeverity>
-      </configuration>
-    </plugin>
   </plugins>
   <finalName>pdf-classifier</finalName>
 </build>
+<!-- Snyk lives in a profile rather than the default build.
+     Bound to `verify` it would run on every local build, and it needs
+     SNYK_TOKEN plus a network call to Snyk's API — so an ordinary
+     `mvn verify` would fail for want of a credential, not a vulnerability.
+     CI activates this explicitly:  mvn -Psecurity verify
+     There it IS bound to the lifecycle and DOES fail the build on a
+     high-severity finding, which is what makes the claim true. -->
+<profiles>
+  <profile>
+    <id>security</id>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>io.snyk</groupId>
+          <artifactId>snyk-maven-plugin</artifactId>
+          <version>2.2.0</version>
+          <inherited>false</inherited>
+          <executions>
+            <execution>
+              <id>snyk-test</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>test</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <apiToken>${env.SNYK_TOKEN}</apiToken>
+            <!-- `failSeverity` is NOT a parameter of this plugin; it was
+                 silently ignored ("Parameter 'failSeverity' is unknown").
+                 The threshold is a Snyk CLI flag, passed through <args>. -->
+            <args>
+              <arg>--severity-threshold=high</arg>
+            </args>
+            <!-- Default is already true; stated explicitly because this is
+                 the setting that makes "high-severity findings block the
+                 build" a true statement rather than an aspiration. -->
+            <failOnIssues>true</failOnIssues>
+          </configuration>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+</profiles>
+
 </project>
